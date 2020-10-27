@@ -3,30 +3,28 @@
 #include <iostream>
 #include <cstdio>
 
-#include "Engine_OpenGL.hpp"
-
-using Engine_t = Engine_OpenGL;
+#include "Engine.hpp"
 
 class App
 {
 private:
-    static Engine_t Engine;
+    Engine engine;
 
 public:
 
-    static void init() 
+    App() 
     {
-        Engine.init();
+        engine.init();
     }
 
-    static void terminate() 
+    ~App() 
     {
-        Engine.terminate();
+        engine.terminate();
     }
 
-    static void run() 
+    void run() 
     {
-        while (Engine.is_run()) {
+        while (engine.is_run()) {
 
             glfwWaitEvents();
 
@@ -34,6 +32,7 @@ public:
 
             glClearColor(H(0xFF), H(0xD0), H(0x7B), 0.3);
 
+            engine.swap_buffers();
         }
         
     }

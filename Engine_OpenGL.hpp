@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Engine.hpp"
+#include "Engine_protocol.hpp"
 
 #include <GLFW/glfw3.h>
 #include <GL/freeglut.h>
@@ -34,12 +34,16 @@ public:
     ~Engine_OpenGL() = default;
 
     int init();
-    int create_window();
+    int terminate();
 
     int is_run();
 
+    int create_window();
     int delete_window(int id);
-    int terminate();
+
+    void swap_buffers() {
+        glfwSwapBuffers(main_window_);
+    }
 };
 
 int Engine_OpenGL::init() 
