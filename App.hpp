@@ -10,21 +10,21 @@ using Engine_t = Engine_OpenGL;
 class App
 {
 private:
-    Engine_t Engine;
+    static Engine_t Engine;
 
 public:
 
-    App() 
+    static void init() 
     {
         Engine.init();
     }
 
-    ~App() 
+    static void terminate() 
     {
         Engine.terminate();
     }
 
-    void run() 
+    static void run() 
     {
         while (Engine.is_run()) {
 
