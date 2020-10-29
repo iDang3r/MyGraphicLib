@@ -9,7 +9,8 @@ public:
     static constexpr double     window_w_to_h   = (double)window_width / window_height;
 
     static constexpr double     Pi              = M_PI;
-    static constexpr double     angle_circle_r  = 0.03;
+    static constexpr double     angle_circle_x  = 0.024;
+    static constexpr double     angle_circle_y  = angle_circle_x * window_w_to_h;
 
     Engine_protocol()   = default;
     ~Engine_protocol()  = default;

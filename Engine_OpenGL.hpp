@@ -64,7 +64,7 @@ public:
     }
 
     static void draw_circle(const Point& start, double radius, const Color &color = Color(1.0, 1.0, 1.0)) {
-        const int degree = 100;
+        const int degree = 50;
 
         color.set();
 

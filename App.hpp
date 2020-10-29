@@ -20,7 +20,7 @@ public:
     {
         Engine::init();
 
-        Engine::create_system_window(Point(1, 1), 0.4, 0.4);
+        Engine::create_system_window(Point(0.4, 0.4), 1.1, 1.0);
     }
 
     ~App() 
