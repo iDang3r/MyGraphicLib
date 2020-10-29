@@ -7,7 +7,7 @@
 #include "helpful_functions.hpp"
 #include "OpenGL_help_classes.hpp"
 
-class Engine_OpenGL : Engine_protocol
+class Engine_OpenGL : public Engine_protocol
 {
 private:
 
