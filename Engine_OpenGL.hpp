@@ -11,7 +11,7 @@ class Engine_OpenGL : Engine_protocol
 {
 private:
 
-    GLFWwindow* main_window_ = NULL;
+    static GLFWwindow* main_window_;
     
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) 
     {
@@ -37,15 +37,12 @@ private:
 
 public:
 
-    Engine_OpenGL()  = default;
-    ~Engine_OpenGL() = default;
+    static int init();
+    static int terminate();
 
-    int init();
-    int terminate();
+    static int is_run();
 
-    int is_run();
-
-    void draw_rectangle(const Point& start, double width, double height, const Color &color = Color(1.0, 1.0, 1.0))
+    static void draw_rectangle(const Point& start, double width, double height, const Color &color = Color(1.0, 1.0, 1.0))
     {
         color.set();
 
@@ -59,15 +56,17 @@ public:
         glEnd();
     }
 
-    void draw_square(const Point& start, double width, const Color &color = Color(1.0, 1.0, 1.0)) 
+    static void draw_square(const Point& start, double width, const Color &color = Color(1.0, 1.0, 1.0)) 
     {
         double height = width * window_w_to_h;
 
         draw_rectangle(start, width, height, color);
     }
 
-    void draw_circle(const Point& start, double radius) {
+    static void draw_circle(const Point& start, double radius, const Color &color = Color(1.0, 1.0, 1.0)) {
         const int degree = 100;
+
+        color.set();
 
         glBegin(GL_TRIANGLE_FAN); //BEGIN CIRCLE
         glVertex2f(start.x, start.y); // center of circle
@@ -82,10 +81,12 @@ public:
         glEnd(); //END
     }
 
-    void swap_buffers() {
+    static void swap_buffers() {
         glfwSwapBuffers(main_window_);
     }
 };
+
+GLFWwindow* Engine_OpenGL::main_window_ = NULL;
 
 int Engine_OpenGL::init() 
 {
@@ -109,9 +110,9 @@ int Engine_OpenGL::init()
     printf("Renderer: %s\n", renderer);
     printf("OpenGL version supported %s\n", version);
 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_POINT_SMOOTH);
-    glDepthFunc(GL_LESS);
+    // glEnable(GL_DEPTH_TEST);
+    // glEnable(GL_POINT_SMOOTH);
+    // glDepthFunc(GL_LESS);
 
     glTranslatef(-1.0, -1.0, 0);
 

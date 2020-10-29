@@ -5,7 +5,7 @@ class Object
 private:
 public:
 
-    std::unordered_set<Object*> sub_objects;
+    // std::set<Object*> sub_objects;
 
     virtual void draw()     = 0;
 

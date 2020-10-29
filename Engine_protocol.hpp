@@ -9,13 +9,14 @@ public:
     static constexpr double     window_w_to_h   = (double)window_width / window_height;
 
     static constexpr double     Pi              = M_PI;
+    static constexpr double     angle_circle_r  = 0.03;
 
-    Engine_protocol()                   = default;
-    ~Engine_protocol()                  = default;
+    Engine_protocol()   = default;
+    ~Engine_protocol()  = default;
 
-    virtual int init()                  = 0;
-    virtual int terminate()             = 0;
+    static int init()       {}
+    static int terminate()  {}
 
-    virtual int is_run()                = 0;
+    static int is_run()     {}
     
 };

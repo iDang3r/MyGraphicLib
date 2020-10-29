@@ -1,6 +1,7 @@
 #pragma once
 
-class Point {
+class Point 
+{
 public:
 
     double x;
@@ -8,45 +9,54 @@ public:
 
     Point(double x = 0.0, double y = 0.0) : x(x), y(y) {}
 
-    void set() const {
+    void set() const 
+    {
         glVertex2d(x, y);
     }
 
-    Point& operator+=(const Point &p) {
+    Point& operator+=(const Point &p) 
+    {
         x += p.x;
         y += p.y;
         return *this;
     }
 
-    Point& operator-=(const Point &p) {
+    Point& operator-=(const Point &p) 
+    {
         x -= p.x;
         y -= p.y;
         return *this;
     }
 
-    Point operator+(const Point &p) const {
+    Point operator+(const Point &p) const 
+    {
         Point n_p = *this;
         return n_p += p;
     }
 
-    Point operator-(const Point &p) const {
+    Point operator-(const Point &p) const 
+    {
         Point n_p = *this;
         return n_p -= p;
     }
 
-    Point operator*(double k) const {
+    Point operator*(double k) const 
+    {
         return Point(k * x, k * y);
     }
 
-    Point orthogonal() const {
+    Point orthogonal() const 
+    {
         return Point(-y, x);
     }
 
-    double length() const {
+    double length() const 
+    {
         return std::sqrt(x * x + y * y);
     }
 
-    void set_normal() {
+    void set_normal() 
+    {
         double len = length();
         x /= len;
         y /= len;
@@ -54,7 +64,8 @@ public:
 
 };
 
-class Color {
+class Color 
+{
 public:
     
     double r;
@@ -70,3 +81,25 @@ public:
     }
 
 };
+
+std::ostream& operator<<(std::ostream &out, const Color &color)
+{
+    out << std::setprecision(3) << color.r << " " << color.g << " " << color.b << " " << color.a << std::endl;
+    return out;
+}
+
+namespace COLORS
+{
+    const Color red             (1.0,   0.0,    0.0);
+    const Color green           (0.0,   1.0,    0.0);
+    const Color blue            (0.0,   0.0,    1.0);
+    const Color black           (0.0,   0.0,    0.0);
+    const Color white           (1.0,   1.0,    1.0);
+
+    const Color window          (1.0,   0.0,    0.0);
+    const Color sys_window      (0.2,   0.2,    0.2);
+    const Color sys_window_top  (0.1,   0.1,    0.1);
+
+    const Color main_background (H(0xFF), H(0xD0), H(0x7B), 0.3);
+    
+} // namespace COLORS

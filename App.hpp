@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <iomanip>
 #include <cstdio>
 #include <cmath>
 #include <vector>
@@ -11,39 +12,31 @@
 class App
 {
 private:
-    Engine engine;
+    // Engine engine;
 
 public:
 
     App() 
     {
-        engine.init();
+        Engine::init();
+
+        Engine::create_system_window(Point(1, 1), 0.4, 0.4);
     }
 
     ~App() 
     {
-        engine.terminate();
+        Engine::terminate();
     }
 
     void run() 
     {
-        while (engine.is_run()) {
+        while (Engine::is_run()) {
 
             glfwWaitEvents();
 
-            // glLoadIdentity();
+            Engine::render();
 
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the buffers
-
-            glClearColor(H(0xFF), H(0xD0), H(0x7B), 0.3);
-
-            engine.draw_square(Point(0.1, 0.1), 0.4);
-
-            engine.draw_circle(Point(0, 0), 1);
-
-            glFlush();
-
-            engine.swap_buffers();
+            Engine::swap_buffers();
         }
         
     }
