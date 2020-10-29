@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <GL/freeglut.h>
 #include "helpful_functions.hpp"
+#include "OpenGL_help_classes.hpp"
 
 class Engine_OpenGL : Engine_protocol
 {
@@ -12,21 +13,27 @@ private:
 
     GLFWwindow* main_window_ = NULL;
     
-    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
-    std::cout << "Key pressed: " << key << ", with scancode:  " << scancode << std::endl;
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, GL_TRUE);
-    }
+    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) 
+    {
+        std::cout << "Key pressed: " << key << ", with scancode:  " << scancode << std::endl;
+        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+            glfwSetWindowShouldClose(window, GL_TRUE);
+        }
 
-    if (key == GLFW_KEY_Q && action == GLFW_PRESS) {
-        std::cout << "Q rescan\n";
-    }
+        if (key == GLFW_KEY_Q && action == GLFW_PRESS) {
+            std::cout << "Q rescan\n";
+        }
 
-	if (key == GLFW_KEY_B && action == GLFW_PRESS) {
-        std::cout << "B rescan\n";
-    }
+        if (key == GLFW_KEY_B && action == GLFW_PRESS) {
+            std::cout << "B rescan\n";
+        }
 
-}
+    }   
+
+    static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
+    {
+        std::cout << "Cursor position by x: " << xpos << ", by y: " << ypos << std::endl;
+    }
 
 public:
 
@@ -38,8 +45,42 @@ public:
 
     int is_run();
 
-    int create_window();
-    int delete_window(int id);
+    void draw_rectangle(const Point& start, double width, double height, const Color &color = Color(1.0, 1.0, 1.0))
+    {
+        color.set();
+
+        glBegin(GL_QUADS);
+            
+        glVertex2f(start.x,         start.y);
+        glVertex2f(start.x + width, start.y);
+        glVertex2f(start.x + width, start.y + height);
+        glVertex2f(start.x,         start.y + height);
+        
+        glEnd();
+    }
+
+    void draw_square(const Point& start, double width, const Color &color = Color(1.0, 1.0, 1.0)) 
+    {
+        double height = width * window_w_to_h;
+
+        draw_rectangle(start, width, height, color);
+    }
+
+    void draw_circle(const Point& start, double radius) {
+        const int degree = 100;
+
+        glBegin(GL_TRIANGLE_FAN); //BEGIN CIRCLE
+        glVertex2f(start.x, start.y); // center of circle
+
+        double coef     = 2 * Pi / degree;
+        double radius_h = radius * window_w_to_h;
+        for (int i = 0; i <= degree; i++) {
+            glVertex2f(
+            (start.x + (radius   * std::cos(i * coef))), 
+            (start.y + (radius_h * std::sin(i * coef))));
+        }
+        glEnd(); //END
+    }
 
     void swap_buffers() {
         glfwSwapBuffers(main_window_);
@@ -59,7 +100,9 @@ int Engine_OpenGL::init()
     }
 
     glfwMakeContextCurrent(main_window_);
+
     glfwSetKeyCallback(main_window_, key_callback);
+    glfwSetCursorPosCallback(main_window_, cursor_position_callback);
 
     const GLubyte* renderer = glGetString(GL_RENDERER); // get renderer string
     const GLubyte* version  = glGetString(GL_VERSION);  // version as a string
@@ -70,20 +113,14 @@ int Engine_OpenGL::init()
     glEnable(GL_POINT_SMOOTH);
     glDepthFunc(GL_LESS);
 
+    glTranslatef(-1.0, -1.0, 0);
+
     return 0;
 }
 
 int Engine_OpenGL::terminate() {
     glfwTerminate();
     return 0;
-}
-
-int Engine_OpenGL::create_window() {
-
-}
-
-int Engine_OpenGL::delete_window(int id) {
-
 }
 
 int Engine_OpenGL::is_run() {
