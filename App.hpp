@@ -6,6 +6,8 @@
 #include <cmath>
 #include <vector>
 #include <set>
+#include <map>
+#include <queue>
 
 #include "Engine.hpp"
 
@@ -32,11 +34,10 @@ public:
     {
         while (Engine::is_run()) {
 
-            glfwWaitEvents();
+            Engine::event_processing();
 
             Engine::render();
 
-            Engine::swap_buffers();
         }
         
     }

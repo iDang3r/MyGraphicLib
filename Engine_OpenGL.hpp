@@ -17,7 +17,7 @@ private:
     {
         std::cout << "Key pressed: " << key << ", with scancode:  " << scancode << std::endl;
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-            glfwSetWindowShouldClose(window, GL_TRUE);
+            glfwSetWindowShouldClose(main_window_, GL_TRUE);
         }
 
         if (key == GLFW_KEY_Q && action == GLFW_PRESS) {
@@ -32,7 +32,31 @@ private:
 
     static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
     {
+        if (xpos < 0 || ypos < 0 || xpos > window_width || ypos > window_height) {
+            return;
+        }
         std::cout << "Cursor position by x: " << xpos << ", by y: " << ypos << std::endl;
+
+        Point point(2 * xpos / window_width, 2 - 2 * ypos / window_height);
+        std::cout << point << std::endl;
+    }
+
+    static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+    {
+        std::cout << "Mouse pressed button: " << button << ", with action:  " << action << std::endl;
+        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+            std::cout << "Left mouse click!\n";
+
+            double xpos = 0, ypos = 0;
+            glfwGetCursorPos(main_window_, &xpos, &ypos);
+
+            if (xpos < 0 || ypos < 0 || xpos > window_width || ypos > window_height) {
+                return;
+            }
+
+            Point point(2 * xpos / window_width, 2 - 2 * ypos / window_height);
+            Event::push(Event_t(Event::CLICK, point.x, point.y)); 
+        }
     }
 
 public:
@@ -81,9 +105,18 @@ public:
         glEnd(); //END
     }
 
-    static void swap_buffers() {
+    static void before_rendering()
+    {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the buffers
+        glClearColor(H(0xFF), H(0xD0), H(0x7B), 0.3);
+    }
+
+    static void after_rendering()
+    {
+        glFlush();
         glfwSwapBuffers(main_window_);
     }
+
 };
 
 GLFWwindow* Engine_OpenGL::main_window_ = NULL;
@@ -94,7 +127,7 @@ int Engine_OpenGL::init()
         return -1;
     }
 
-    main_window_ = glfwCreateWindow(1920, 1080, "by DED_32", NULL, NULL);
+    main_window_ = glfwCreateWindow(window_width, window_height, "by DED_32", NULL, NULL);
     if (!main_window_) {
        glfwTerminate();
        return -1;
@@ -104,6 +137,7 @@ int Engine_OpenGL::init()
 
     glfwSetKeyCallback(main_window_, key_callback);
     glfwSetCursorPosCallback(main_window_, cursor_position_callback);
+    glfwSetMouseButtonCallback(main_window_, mouse_button_callback);
 
     const GLubyte* renderer = glGetString(GL_RENDERER); // get renderer string
     const GLubyte* version  = glGetString(GL_VERSION);  // version as a string

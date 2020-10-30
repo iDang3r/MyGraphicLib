@@ -47,8 +47,5 @@ public:
         Engine::draw_rectangle(draw_start, width_ - 2 * angle_circle_x, angle_circle_y, back_color_);
     }
 
-    bool handle() {
-        return true;
-    }
 
 };

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Event.hpp"
+
 class Engine_protocol 
 {
 private:
@@ -11,9 +13,6 @@ public:
     static constexpr double     Pi              = M_PI;
     static constexpr double     angle_circle_x  = 0.024;
     static constexpr double     angle_circle_y  = angle_circle_x * window_w_to_h;
-
-    Engine_protocol()   = default;
-    ~Engine_protocol()  = default;
 
     static int init()       {}
     static int terminate()  {}

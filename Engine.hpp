@@ -17,38 +17,47 @@ public:
 
     static int valid_id_;
 
-    static std::set<Object*> objects;
+    static std::map<int, Object*> objects;
 
-    static void render() {
+    static void event_processing()
+    {
+        glfwWaitEvents();
 
-        // glLoadIdentity();
+        while (!Event::empty()) {
+            Event_t event = Event::get();
+            std::cout << "Event: " << event.id << " " << event.x << " " << event.y << std::endl;
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the buffers
+            for (auto& object : objects) {
+                
+            }
+        }
+    }
 
-        glClearColor(H(0xFF), H(0xD0), H(0x7B), 0.3);
-
-        Engine::draw_square(Point(0.1, 0.1), 0.4);
-
-        Engine::draw_circle(Point(1, 1), 0.5);
+    static void render() 
+    {
+        before_rendering();
 
         for (auto object : objects) {
-            object->draw();
+            object.second->draw();
         }
 
-        glFlush();
-
+        after_rendering();
     }
 
     static int create_window(const Point &start, double width, double height, const Color &color = COLORS::window) {
 
         Window* new_window = new Window(start, width, height, color);
-        objects.insert(dynamic_cast<Object*>(new_window));
+        objects[valid_id_] = dynamic_cast<Object*>(new_window);
+
+        return valid_id_++;
     }
 
     static int create_system_window(const Point &start, double width, double height, const Color &color = COLORS::sys_window) {
 
         System_window* new_sys_window = new System_window(start, width, height, color);
-        objects.insert(dynamic_cast<Object*>(new_sys_window));
+        objects[valid_id_] = dynamic_cast<Object*>(new_sys_window);
+    
+        return valid_id_++;
     }
 
     static int delete_window(int id);
@@ -56,4 +65,4 @@ public:
 };
 
 int Engine::valid_id_ = 1;
-std::set<Engine::Object*> Engine::objects;
+std::map<int, Engine::Object*> Engine::objects;

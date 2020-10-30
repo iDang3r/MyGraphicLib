@@ -64,6 +64,12 @@ public:
 
 };
 
+std::ostream& operator<<(std::ostream &out, const Point &point)
+{
+    out << "x: " << point.x << ", y: " << point.y;
+    return out;
+}
+
 class Color 
 {
 public:
