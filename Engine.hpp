@@ -28,7 +28,20 @@ public:
             std::cout << "Event: " << event.id << " " << event.x << " " << event.y << std::endl;
 
             for (auto& object : objects) {
-                
+                Window* window = dynamic_cast<Window*>(object.second);
+                if (window == nullptr) {
+                    continue;
+                }
+
+                Event_t new_event(event.id, event.x - window->start_.x, event.y - window->start_.y);
+                if (new_event.x < 0 || new_event.y < 0) {
+                    continue;
+                }
+
+                bool u = window->check_mouse(new_event);
+                if (u) {
+                    break;
+                }
             }
         }
     }

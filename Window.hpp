@@ -54,7 +54,7 @@ public:
 
     bool handle(const Event_t &event) 
     {
-        
+        std::cout << "WINDOW HANDLER\n";
         return true;
     }
 
