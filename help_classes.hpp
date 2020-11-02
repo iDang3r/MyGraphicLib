@@ -1,5 +1,11 @@
 #pragma once
 
+#define w(x) std::cout << #x << ": " << x << std::endl; 
+
+double H(int hex) {
+    return static_cast<double>(hex) / 255; 
+}
+
 class Point 
 {
 public:
@@ -7,7 +13,7 @@ public:
     double x;
     double y;
 
-    Point(double x = 0.0, double y = 0.0) : x(x), y(y) {}
+    Point(double x, double y) : x(x), y(y) {}
 
     void set() const 
     {
@@ -62,6 +68,12 @@ public:
         y /= len;
     }
 
+    void OpenGL_fit() 
+    {
+        x *= 2;
+        y *= 2;
+    }
+
 };
 
 std::ostream& operator<<(std::ostream &out, const Point &point)
@@ -90,22 +102,23 @@ public:
 
 std::ostream& operator<<(std::ostream &out, const Color &color)
 {
-    out << std::setprecision(3) << color.r << " " << color.g << " " << color.b << " " << color.a << std::endl;
+    out << color.r << " " << color.g << " " << color.b << " " << color.a << std::endl;
     return out;
 }
 
 namespace COLORS
 {
-    const Color red             (1.0,   0.0,    0.0);
-    const Color green           (0.0,   1.0,    0.0);
-    const Color blue            (0.0,   0.0,    1.0);
-    const Color black           (0.0,   0.0,    0.0);
-    const Color white           (1.0,   1.0,    1.0);
+    const Color red             (1.0,       0.0,        0.0);
+    const Color green           (0.0,       1.0,        0.0);
+    const Color blue            (0.0,       0.0,        1.0);
+    const Color black           (0.0,       0.0,        0.0);
+    const Color white           (1.0,       1.0,        1.0);
 
-    const Color window          (1.0,   0.0,    0.0);
-    const Color sys_window      (0.2,   0.2,    0.2);
-    const Color sys_window_top  (0.1,   0.1,    0.1);
+    const Color window          (1.0,       0.0,        0.0);
+    const Color sys_window      (0.2,       0.2,        0.2);
+    const Color sys_window_top  (0.1,       0.1,        0.1);
+    const Color button          (H(0xFF),   H(0x73),    H(0x73));
 
-    const Color main_background (H(0xFF), H(0xD0), H(0x7B), 0.3);
+    const Color main_background (H(0xFF),   H(0xD0),    H(0x7B),    0.3);
     
 } // namespace COLORS

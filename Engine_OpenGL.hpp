@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Engine_protocol.hpp"
-
 #include <GLFW/glfw3.h>
 #include <GL/freeglut.h>
-#include "helpful_functions.hpp"
-#include "OpenGL_help_classes.hpp"
+#include "help_classes.hpp"
+#include "OpenGL_helpful_functions.hpp"
+
+#include "Engine_protocol.hpp"
 
 class Engine_OpenGL : public Engine_protocol
 {
@@ -35,15 +35,15 @@ private:
         if (xpos < 0 || ypos < 0 || xpos > window_width || ypos > window_height) {
             return;
         }
-        std::cout << "Cursor position by x: " << xpos << ", by y: " << ypos << std::endl;
+        // std::cout << "Cursor position by x: " << xpos << ", by y: " << ypos << std::endl;
 
-        Point point(2 * xpos / window_width, 2 - 2 * ypos / window_height);
-        std::cout << point << std::endl;
+        Point point(xpos / window_width, 1 - ypos / window_height);
+        // std::cout << point << std::endl;
     }
 
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     {
-        std::cout << "Mouse pressed button: " << button << ", with action:  " << action << std::endl;
+        // std::cout << "Mouse pressed button: " << button << ", with action:  " << action << std::endl;
         if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
             std::cout << "Left mouse click!\n";
 
@@ -54,7 +54,7 @@ private:
                 return;
             }
 
-            Point point(2 * xpos / window_width, 2 - 2 * ypos / window_height);
+            Point point(xpos / window_width, 1 - ypos / window_height);
             Event::push(Event_t(Event::CLICK, point.x, point.y)); 
         }
     }
@@ -66,8 +66,12 @@ public:
 
     static int is_run();
 
-    static void draw_rectangle(const Point& start, double width, double height, const Color &color = Color(1.0, 1.0, 1.0))
+    static void draw_rectangle(Point start, double width, double height, const Color &color = Color(1.0, 1.0, 1.0))
     {
+        start.OpenGL_fit();
+        width *= 2;
+        height *= 2;
+
         color.set();
 
         glBegin(GL_QUADS);
@@ -80,15 +84,22 @@ public:
         glEnd();
     }
 
-    static void draw_square(const Point& start, double width, const Color &color = Color(1.0, 1.0, 1.0)) 
+    static void draw_square(Point start, double width, const Color &color = Color(1.0, 1.0, 1.0)) 
     {
+        start.OpenGL_fit();
+        width *= 2;
+
         double height = width * window_w_to_h;
 
         draw_rectangle(start, width, height, color);
     }
 
-    static void draw_circle(const Point& start, double radius, const Color &color = Color(1.0, 1.0, 1.0)) {
+    static void draw_circle(Point start, double radius, const Color &color = Color(1.0, 1.0, 1.0)) 
+    {
         const int degree = 50;
+
+        start.OpenGL_fit();
+        radius *= 2;
 
         color.set();
 
@@ -115,6 +126,11 @@ public:
     {
         glFlush();
         glfwSwapBuffers(main_window_);
+    }
+
+    static void wait_events()
+    {
+        glfwWaitEvents();
     }
 
 };

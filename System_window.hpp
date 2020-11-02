@@ -9,7 +9,9 @@ public:
 
     System_window(const Point &start, double width, double height, const Color &color = Color(0.1, 0.1, 0.1)) :
         Window(start, width, height, color) 
-    {}
+    {
+        std::cout << "Sys_window: " << start << ", width: " << width << ", height: " << height << std::endl;
+    }
 
     void draw() {
 
@@ -29,8 +31,12 @@ public:
         Engine::draw_rectangle(draw_start, width_ - 2 * angle_circle_x, angle_circle_y, COLORS::sys_window_top);
 
         draw_start = start_;
+        draw_start.y += height_ - 2 * angle_circle_y;
+        Engine::draw_rectangle(draw_start, width_, angle_circle_y, COLORS::sys_window_top);
+
+        draw_start = start_;
         draw_start.y += angle_circle_y;
-        Engine::draw_rectangle(draw_start, width_, height_ - 2 * angle_circle_y, back_color_);
+        Engine::draw_rectangle(draw_start, width_, height_ - 3 * angle_circle_y, back_color_);
 
         draw_start = start_;
         draw_start.x += angle_circle_x;
@@ -45,6 +51,8 @@ public:
         draw_start = start_;
         draw_start.x += angle_circle_x;
         Engine::draw_rectangle(draw_start, width_ - 2 * angle_circle_x, angle_circle_y, back_color_);
+
+        draw_sub_windows();
     }
 
 

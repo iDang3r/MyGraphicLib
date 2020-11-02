@@ -2,12 +2,6 @@
 #ifndef HELPFUL_FUNCTIONS_HPP
 #define HELPFUL_FUNCTIONS_HPP
 
-#define w(x) std::cout << #x << ": " << x << std::endl; 
-
-double H(int hex) {
-    return static_cast<double>(hex) / 255; 
-}
-
 void drawText(const char *text, int length, double x, double y) {
     glMatrixMode(GL_PROJECTION);
     double *matrix = new double[16];
