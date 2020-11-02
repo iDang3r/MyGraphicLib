@@ -12,7 +12,7 @@ public:
     Functor functor;
     Label   label;
 
-    Button(int window_id, const Point &start, double width, double height, 
+    Button(const Point &start, double width, double height, 
         const Color &color, Functor functor, const char* label = NULL)
         : Window(start, width, height, color), functor(functor), label(start, width, height, label)
     {
@@ -21,13 +21,21 @@ public:
 
     bool handle(const Event_t &event) 
     {
+        // std::cout << "BUTTON HANDLER, x: " << event.x << ", y: " << event.y << std::endl;
         switch (event.id)
         {
         case Event::CLICK:
-            
-            std::cout << "BUTTON HANDLER, x: " << event.x << ", y: " << event.y << std::endl;
 
-            functor(this);
+            pressed_ = true;
+            back_color_.inverse();
+            functor(dynamic_cast<Button*>(this));
+
+            break;
+
+        case Event::RELEASE:
+
+            pressed_ = false;
+            back_color_.inverse();
 
             break;
         }

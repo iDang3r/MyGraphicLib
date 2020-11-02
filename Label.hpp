@@ -23,4 +23,9 @@ public:
         draw_text(start_, width_, height_, str_, len_);
     }
 
+    bool handle(const Event_t &event)
+    {
+        return false;
+    }
+
 };

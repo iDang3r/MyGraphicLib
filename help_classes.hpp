@@ -94,8 +94,16 @@ public:
     explicit Color(double r, double g, double b, double a = 1.0) : r(r),    g(g),    b(b),    a(a)    {}
     explicit Color(int    r, int    g, int    b, int    a = 255) : r(H(r)), g(H(g)), b(H(b)), a(H(a)) {} 
 
-    void set() const {
+    void set() const 
+    {
         glColor3d(r, g, b);
+    }
+
+    void inverse()
+    {
+        r = 1 - r;
+        g = 1 - g;
+        b = 1 - b;
     }
 
 };

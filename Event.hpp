@@ -25,6 +25,8 @@ public:
         RESERVED,
         HOVER,
         CLICK,
+        RELEASE,
+        DOUBLE_CLICK,
     };
 
     static std::queue<Event_t> queue;

@@ -12,6 +12,7 @@ public:
     double  height_;
     Color   back_color_;
 
+    bool    pressed_    = false;
     bool    hovered_    = false;
 
     Window(const Point &start, double width, double height, const Color &color = COLORS::window) : 
@@ -22,14 +23,14 @@ public:
 
     virtual bool check_mouse(Event_t event) 
     {
-        std::cout << "check_mouse:-> x: " << event.x << ", y: " << event.y << std::endl;
+        // std::cout << "check_mouse:-> x: " << event.x << ", y: " << event.y << std::endl;
         if (event.x < start_.x || event.y < start_.y 
             || event.x > start_.x + width_ || event.y > start_.y + height_) {
             return false;
         }
 
         for (auto object : sub_objects) {
-            std::cout << "CHECK NEW SUB_OBJECT\n";
+            // std::cout << "CHECK NEW SUB_OBJECT\n";
             Window* window = dynamic_cast<Window*>(object);
             if (window == nullptr) {
                 continue;

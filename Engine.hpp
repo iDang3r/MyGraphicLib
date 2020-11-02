@@ -14,7 +14,10 @@ public:
     #include "Window.hpp"
     #include "System_window.hpp"
     #include "Button.hpp"
+    #include "Button_round.hpp"
     #include "Label.hpp"
+
+    #include "engine_fuctors.hpp"
 
     static int valid_id_;
 
@@ -27,9 +30,9 @@ public:
 
         while (!Event::empty()) {
             Event_t event = Event::get();
-            std::cout << "Event: " << event.id << " " << event.x << " " << event.y << std::endl;
+            // std::cout << "Event: " << event.id << " " << event.x << " " << event.y << std::endl;
 
-            for (auto& sys_window : system_windows) {
+            for (auto sys_window : system_windows) {
                 Window* window = dynamic_cast<Window*>(sys_window);
                 if (window == nullptr) {
                     continue;
@@ -51,28 +54,24 @@ public:
             sys_window->draw();
         }
 
-        // drawText("QWERTY", 6, 0.5, 0.5);
-
-        // Engine::draw_circle(Point(1.0, 1.0), 0.3);
-
         after_rendering();
     }
 
     static int create_window(const Point &start, double width, double height, const Color &color = COLORS::window) 
     {
         Window* new_window = new Window(start, width, height, color);
-        all_objects[valid_id_] = dynamic_cast<Object*>(new_window);
+        // all_objects[new_window->id_] = dynamic_cast<Object*>(new_window);
 
-        return valid_id_++;
+        return new_window->id_;
     }
 
     static int create_system_window(const Point &start, double width, double height, const Color &color = COLORS::sys_window) 
     {
         System_window* new_sys_window = new System_window(start, width, height, color);
-        all_objects[valid_id_] = dynamic_cast<Object*>(new_sys_window);
+        // all_objects[new_sys_window->id_] = dynamic_cast<Object*>(new_sys_window);
         system_windows.insert(new_sys_window);
     
-        return valid_id_++;
+        return new_sys_window->id_;
     }
 
     template <typename Functor>
@@ -86,12 +85,33 @@ public:
         double button_width  = width  * window->width_;
         double button_height = height * window->height_;
         Point  button_start(start.x + window->start_.x, start.y + window->start_.y);
-        Button<Functor>* new_button = new Button(window_id, button_start, button_width, button_height, color, functor, label);
+        Button<Functor>* new_button = new Button(button_start, button_width, button_height, color, functor, label);
         
         window->sub_objects.insert(new_button);
-        all_objects[valid_id_] = dynamic_cast<Object*>(new_button);
+        // all_objects[new_button->id_] = dynamic_cast<Object*>(new_button);
 
-        return valid_id_++;
+        return new_button->id_;
+    }
+
+    template <typename Functor>
+    static int create_round_button(int window_id, const Point &start, double radius_x, Functor functor, const Color &color = COLORS::button) 
+    {
+        Window* window = dynamic_cast<Window*>(all_objects[window_id]);
+        if (window == nullptr) {
+            std::cout << "create_round_button: ";
+            w(window_id);
+            return -1;
+        }
+
+        double button_width  = radius_x *                 window->width_;
+        double button_height = radius_x * window_w_to_h * window->height_;
+        Point  button_start(start.x + window->start_.x, start.y + window->start_.y);
+        Button_round<Functor>* new_button = new Button_round(button_start, radius_x, color, functor);
+        
+        window->sub_objects.insert(new_button);
+        // all_objects[new_button->id_] = dynamic_cast<Object*>(new_button);
+
+        return new_button->id_;
     }
 
     static int delete_window(int id);

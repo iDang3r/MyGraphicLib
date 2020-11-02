@@ -44,7 +44,7 @@ private:
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     {
         // std::cout << "Mouse pressed button: " << button << ", with action:  " << action << std::endl;
-        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        if (button == GLFW_MOUSE_BUTTON_LEFT) {
             std::cout << "Left mouse click!\n";
 
             double xpos = 0, ypos = 0;
@@ -55,7 +55,26 @@ private:
             }
 
             Point point(xpos / window_width, 1 - ypos / window_height);
-            Event::push(Event_t(Event::CLICK, point.x, point.y)); 
+
+            Event_t new_event(Event::RESERVED, point.x, point.y);
+
+            switch (action)
+            {
+            case GLFW_RELEASE:
+                new_event.id = Event::RELEASE;
+                break;
+            case GLFW_PRESS:
+                new_event.id = Event::CLICK;
+                break;
+            case GLFW_REPEAT:
+                new_event.id = Event::DOUBLE_CLICK;
+                break;
+            }
+            Event::push(new_event); 
+        }
+
+        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+
         }
     }
 
