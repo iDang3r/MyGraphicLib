@@ -14,6 +14,7 @@ public:
         std::cout << "Round Button: " << start << ", radus_x: " << radus_x  << std::endl;
     }
 
+    void draw()
     {
         draw_circle(Window::start_ + Point(Window::width_ / 2, Window::height_ / 2), Window::width_ / 2, Window::back_color_);
     }
