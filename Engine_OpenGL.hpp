@@ -73,9 +73,14 @@ private:
             Event::push(new_event); 
         }
 
-        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+    }
 
-        }
+    static void window_size_callback(GLFWwindow* window, int width, int height)
+    {
+        window_width    = width;
+        window_height   = height;
+        window_w_to_h   = (double)window_width / window_height;
+        angle_circle_y  = angle_circle_x * window_w_to_h;
     }
 
 public:
@@ -140,8 +145,11 @@ public:
         if (str == NULL) {
             return;
         }
-        double str_height = 14.0 / window_height;
-        double str_width  = length * 9.0 / window_width;
+
+        // SPACE: 14.0  RETINA: 9.0
+        double str_height = 9.0 / window_height;           
+        // SPACE: 9.0   RETINA: 6.0
+        double str_width  = length * 5.6 / window_width;    
 
         drawText(str, length, start_.x + width / 2 - str_width / 2, start_.y + height / 2 - str_height / 2);
     }
@@ -181,9 +189,10 @@ int Engine_OpenGL::init()
 
     glfwMakeContextCurrent(main_window_);
 
-    glfwSetKeyCallback(main_window_, key_callback);
-    glfwSetCursorPosCallback(main_window_, cursor_position_callback);
-    glfwSetMouseButtonCallback(main_window_, mouse_button_callback);
+    glfwSetKeyCallback          (main_window_, key_callback);
+    glfwSetCursorPosCallback    (main_window_, cursor_position_callback);
+    glfwSetMouseButtonCallback  (main_window_, mouse_button_callback);
+    glfwSetWindowSizeCallback   (main_window_, window_size_callback);
 
     const GLubyte* renderer = glGetString(GL_RENDERER); // get renderer string
     const GLubyte* version  = glGetString(GL_VERSION);  // version as a string

@@ -12,7 +12,7 @@ public:
         Window(start, width, height, color)
     {
         // std::cout << "Sys_window: " << start << ", width: " << width << ", height: " << height << std::endl;
-        double k = 0.7;
+        double k = 0.65;
         Engine::create_round_button(id_, Point(angle_circle_x, height - (1 + k) * angle_circle_y), k * angle_circle_x, Close_system_window(), COLORS::red);
     }
 
