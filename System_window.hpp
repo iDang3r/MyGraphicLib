@@ -11,6 +11,8 @@ public:
         Window(start, width, height, color) 
     {
         std::cout << "Sys_window: " << start << ", width: " << width << ", height: " << height << std::endl;
+
+        
     }
 
     void draw() {
