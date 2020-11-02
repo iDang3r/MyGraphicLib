@@ -22,9 +22,8 @@ public:
     {
         Engine::init();
 
-        int id;
-        id = Engine::create_system_window(Point(0.2, 0.3), 0.55, 0.5);
-        Engine::create_button(id, Point(0.05, 0.075), 0.1, 0.075, First_functor(), "button!");
+        int id = Engine::create_system_window(Point(0.2, 0.3), 0.55, 0.5);
+        Engine::create_button(id, Point(0.05, 0.075), 0.15, 0.1, First_functor(), "button!");
     }
 
     ~App() 

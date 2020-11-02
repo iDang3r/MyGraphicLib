@@ -116,6 +116,17 @@ public:
         glEnd(); //END
     }
 
+    static void draw_text(const Point &start_, double width, double height, const char* str, int length)
+    {
+        if (str == NULL) {
+            return;
+        }
+        double str_height = 14.0 / window_height;
+        double str_width  = length * 9.0 / window_width;
+
+        drawText(str, length, start_.x + width / 2 - str_width / 2, start_.y + height / 2 - str_height / 2);
+    }
+
     static void before_rendering()
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the buffers

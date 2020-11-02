@@ -114,6 +114,8 @@ namespace COLORS
     const Color black           (0.0,       0.0,        0.0);
     const Color white           (1.0,       1.0,        1.0);
 
+    const Color clear           (1.0,       1.0,        1.0,        0.0);
+
     const Color window          (1.0,       0.0,        0.0);
     const Color sys_window      (0.357,     0.357,      0.357);
     const Color sys_window_top  (0.16,      0.16,       0.16);

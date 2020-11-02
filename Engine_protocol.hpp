@@ -23,5 +23,6 @@ public:
     static void draw_rectangle(const Point&, double, double, const Color)   {}
     static void draw_square   (const Point&, double, const Color&)          {}
     static void draw_circle   (const Point&, double, const Color&)          {} 
+    static void draw_text     (const Point&, double, double, const char*)   {} 
     
 };

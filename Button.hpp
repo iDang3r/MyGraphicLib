@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Window.hpp"
+#include "Label.hpp"
 
 template <typename Functor>
 class Button : public Window 
@@ -8,12 +9,12 @@ class Button : public Window
 private:
 public:
 
-    Functor     functor;
-    const char* label;
+    Functor functor;
+    Label   label;
 
     Button(int window_id, const Point &start, double width, double height, 
         const Color &color, Functor functor, const char* label = NULL)
-        : Window(start, width, height, color), functor(functor), label(label)
+        : Window(start, width, height, color), functor(functor), label(start, width, height, label)
     {
         std::cout << "Button: " << start << ", width: " << width << ", height: " << height << std::endl;
     }
@@ -37,15 +38,7 @@ public:
     void draw()
     {
         Window::draw();
-
-        if (label != NULL) {
-
-            int length = strlen(label);
-            double str_height = 14.0 / window_height;
-            double str_width  = length * 9.0 / window_width;
-
-            drawText(label, length, start_.x + width_ / 2 - str_width / 2, start_.y + height_ / 2 - str_height / 2);
-        }
+        label.draw();
     }
 
 

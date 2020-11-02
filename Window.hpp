@@ -12,7 +12,7 @@ public:
     double  height_;
     Color   back_color_;
 
-    bool    hovered_ = false;
+    bool    hovered_    = false;
 
     Window(const Point &start, double width, double height, const Color &color = COLORS::window) : 
         start_(start), width_(width), height_(height), back_color_(color)

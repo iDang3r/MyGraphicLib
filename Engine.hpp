@@ -14,6 +14,7 @@ public:
     #include "Window.hpp"
     #include "System_window.hpp"
     #include "Button.hpp"
+    #include "Label.hpp"
 
     static int valid_id_;
 
