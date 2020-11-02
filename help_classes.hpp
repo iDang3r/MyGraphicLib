@@ -116,7 +116,7 @@ namespace COLORS
 
     const Color window          (1.0,       0.0,        0.0);
     const Color sys_window      (0.357,     0.357,      0.357);
-    const Color sys_window_top  (0.1,       0.1,        0.1);
+    const Color sys_window_top  (0.16,      0.16,       0.16);
     const Color button          (H(0xFF),   H(0x73),    H(0x73));
 
     const Color main_background (H(0xFF),   H(0xD0),    H(0x7B),    0.3);

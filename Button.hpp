@@ -8,11 +8,11 @@ class Button : public Window
 private:
 public:
 
-    Functor functor;
-    char*   label;
+    Functor     functor;
+    const char* label;
 
     Button(int window_id, const Point &start, double width, double height, 
-        const Color &color, Functor functor, char* label = NULL)
+        const Color &color, Functor functor, const char* label = NULL)
         : Window(start, width, height, color), functor(functor), label(label)
     {
         std::cout << "Button: " << start << ", width: " << width << ", height: " << height << std::endl;
@@ -39,8 +39,12 @@ public:
         Window::draw();
 
         if (label != NULL) {
-            
-            drawText(label, strlen(label), start_.x, start_.y);
+
+            int length = strlen(label);
+            double str_height = 14.0 / window_height;
+            double str_width  = length * 9.0 / window_width;
+
+            drawText(label, length, start_.x + width_ / 2 - str_width / 2, start_.y + height_ / 2 - str_height / 2);
         }
     }
 
