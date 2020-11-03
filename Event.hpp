@@ -23,7 +23,7 @@ public:
     enum EVENT 
     {
         RESERVED,
-        HOVER,
+        HOVERED,
         CLICK,
         RELEASE,
         DOUBLE_CLICK,

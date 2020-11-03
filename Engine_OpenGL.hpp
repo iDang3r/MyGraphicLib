@@ -38,7 +38,9 @@ private:
         // std::cout << "Cursor position by x: " << xpos << ", by y: " << ypos << std::endl;
 
         Point point(xpos / window_width, 1 - ypos / window_height);
-        // std::cout << point << std::endl;
+        Event_t new_event(Event::HOVERED, point.x, point.y);
+
+        Event::push(new_event);
     }
 
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
@@ -70,7 +72,7 @@ private:
                 new_event.id = Event::DOUBLE_CLICK;
                 break;
             }
-            Event::push(new_event); 
+            Event::push(new_event);
         }
 
     }

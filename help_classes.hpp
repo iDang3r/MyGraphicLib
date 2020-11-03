@@ -85,6 +85,7 @@ std::ostream& operator<<(std::ostream &out, const Point &point)
 class Color 
 {
 public:
+    static const double light_const;
     
     double r;
     double g;
@@ -106,7 +107,22 @@ public:
         b = 1 - b;
     }
 
+    void lighter()
+    {
+        r *= light_const;
+        g *= light_const;
+        b *= light_const;
+    }
+
+    void de_lighter()
+    {
+        r /= light_const;
+        g /= light_const;
+        b /= light_const;
+    }
+
 };
+const double Color::light_const = 1.4;
 
 std::ostream& operator<<(std::ostream &out, const Color &color)
 {
