@@ -17,7 +17,7 @@ public:
     {
         std::cout << "Button: " << start << ", width: " << width << ", height: " << height << std::endl;
         if (label != NULL) {
-            // Engine::create_label(id_, start, width, height, label);
+            Engine::create_label(id_, Point(0.0, 0.0), 1.0, 1.0, label);
         }
     }
 
@@ -27,6 +27,7 @@ public:
         switch (event.id)
         {
         case Event::CLICK:
+        case Event::DOUBLE_CLICK:
 
             pressed_ = true;
             back_color_.inverse();
@@ -61,11 +62,11 @@ public:
     {
         if (hovered_ && !pressed_) {
             back_color_.lighter();
-            draw();
+            Window::draw();
             back_color_.de_lighter();
             hovered_ = false;
         } else {
-            draw();
+            Window::draw();
         }
 
     }
