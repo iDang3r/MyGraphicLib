@@ -143,25 +143,6 @@ public:
         return new_button->id_;
     }
 
-    template <typename Functor>
-    static int create_polished_button(int window_id, const Point &start, double width, double height, Functor functor, const char* label, const Color &color = COLORS::button) 
-    {
-        Window* window = dynamic_cast<Window*>(all_objects[window_id]);
-        if (window == nullptr) {
-            return -1;
-        }
-
-        double button_width  = width  * window->width_;
-        double button_height = height * window->height_;
-        Point  button_start(start.x + window->start_.x, start.y + window->start_.y);
-        Button<Functor>* new_button = new Button_polished(button_start, button_width, button_height, color, functor, label);
-        
-        window->sub_objects.insert(new_button);
-        // all_objects[new_button->id_] = dynamic_cast<Object*>(new_button);
-
-        return new_button->id_;
-    }
-
     static int delete_window(int id);
 
 };
