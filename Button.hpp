@@ -28,7 +28,8 @@ public:
 
             pressed_ = true;
             back_color_.inverse();
-            functor(dynamic_cast<Button*>(this));
+
+            subscribes[Event::RELEASE].push_back(this);
 
             break;
 
@@ -36,6 +37,10 @@ public:
 
             pressed_ = false;
             back_color_.inverse();
+
+            if (check_coordinates(event.x, event.y)) {
+                functor(this);
+            }
 
             break;
         }

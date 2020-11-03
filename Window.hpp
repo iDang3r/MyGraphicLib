@@ -75,4 +75,9 @@ public:
         return true;
     }
 
+    bool check_coordinates(double x, double y)
+    {
+        return !(x < start_.x || y < start_.y || x > start_.x + width_ || y > start_.y + height_);
+    }
+
 };

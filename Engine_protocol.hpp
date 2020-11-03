@@ -14,7 +14,7 @@ public:
     static  double  angle_circle_x;//  = 0.007;
     static  double  angle_circle_y;// = angle_circle_x * window_w_to_h;
 
-    static  constexpr double     Pi              = M_PI;
+    static  constexpr double Pi = M_PI;
 
     static  int init()                                                       {}
     static  int terminate()                                                  {}

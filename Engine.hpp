@@ -2,8 +2,6 @@
 
 #include "Engine_OpenGL.hpp"
 
-#include "Event.hpp"
-
 using Engine_t = Engine_OpenGL;
 
 class Engine : public Engine_OpenGL
@@ -20,10 +18,13 @@ public:
 
     #include "engine_fuctors.hpp"
 
+    #include "Event.hpp"
+
     static int valid_id_;
 
-    static std::set<Object*>        system_windows;
-    static std::map<int, Object*>   all_objects;
+    static std::set<Object*>                    system_windows;
+    static std::map<int, Object*>               all_objects;
+    static std::vector<std::vector<Object*>>    subscribes;
 
     static void event_processing()
     {
@@ -31,19 +32,36 @@ public:
 
         while (!Event::empty()) {
             Event_t event = Event::get();
-            // std::cout << "Event: " << event.id << " " << event.x << " " << event.y << std::endl;
+            //// std::cout << "Event: " << event.id << " " << event.x << " " << event.y << std::endl;
 
-            for (auto sys_window : system_windows) {
-                Window* window = dynamic_cast<Window*>(sys_window);
-                if (window == nullptr) {
-                    continue;
-                }
+            if (event.id == Event::CLICK) {
+                for (auto sys_window : system_windows) {
+                    Window* window = dynamic_cast<Window*>(sys_window);
+                    if (window == nullptr) {
+                        continue;
+                    }
 
-                bool u = window->check_mouse(event);
-                if (u) {
-                    break;
+                    bool u = window->check_mouse(event);
+                    if (u) {
+                        break;
+                    }
                 }
             }
+
+            if (event.id == Event::RELEASE) {
+                for (auto subscr_window : subscribes[Event::RELEASE]) {
+                    Window* window = dynamic_cast<Window*>(subscr_window);
+                    if (window == nullptr) {
+                        continue;
+                    }
+
+                    window->handle(event);
+                }
+
+                subscribes[Event::RELEASE].clear();
+            }
+
+            
         }
     }
 
@@ -120,5 +138,6 @@ public:
 };
 
 int Engine::valid_id_ = 1;
-std::set<Engine::Object*>       Engine::system_windows;
-std::map<int, Engine::Object*>  Engine::all_objects;
+std::set<Engine::Object*>                   Engine::system_windows;
+std::map<int, Engine::Object*>              Engine::all_objects;
+std::vector<std::vector<Engine::Object*>>   Engine::subscribes(Event::num_event_types);

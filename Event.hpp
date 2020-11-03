@@ -27,6 +27,9 @@ public:
         CLICK,
         RELEASE,
         DOUBLE_CLICK,
+
+        // don't touch
+        num_event_types
     };
 
     static std::queue<Event_t> queue;
