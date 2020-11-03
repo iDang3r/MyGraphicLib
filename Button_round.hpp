@@ -16,7 +16,7 @@ public:
 
     void draw()
     {
-        draw_circle(Window::start_ + Point(Window::width_ / 2, Window::height_ / 2), Window::width_ / 2, Window::back_color_);
+        draw_circle(start_ + Point(Window::width_ / 2, Window::height_ / 2), Window::width_ / 2, Window::back_color_);
     }
 
 };

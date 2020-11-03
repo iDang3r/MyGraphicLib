@@ -138,6 +138,8 @@ namespace COLORS
     const Color black           (0.0,       0.0,        0.0);
     const Color white           (1.0,       1.0,        1.0);
 
+    const Color cyan            (H(0x0),    H(0x99),    H(0x99));
+
     const Color clear           (1.0,       1.0,        1.0,        0.0);
 
     const Color window          (1.0,       0.0,        0.0);

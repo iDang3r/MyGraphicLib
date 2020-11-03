@@ -2,7 +2,7 @@
 
 #include "Window.hpp"
 
-class Label : Window 
+class Label : public Window 
 {
 private:
 public:

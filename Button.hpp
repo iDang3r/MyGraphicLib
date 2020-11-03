@@ -10,13 +10,15 @@ private:
 public:
 
     Functor functor;
-    Label   label;
 
     Button(const Point &start, double width, double height, 
         const Color &color, Functor functor, const char* label = NULL)
-        : Window(start, width, height, color), functor(functor), label(start, width, height, label)
+        : Window(start, width, height, color), functor(functor)
     {
         std::cout << "Button: " << start << ", width: " << width << ", height: " << height << std::endl;
+        if (label != NULL) {
+            Engine::create_label(id_, start, width, height, label);
+        }
     }
 
     bool handle(const Event_t &event) 
@@ -40,7 +42,14 @@ public:
 
             if (check_coordinates(event.x, event.y)) {
                 functor(this);
+                hovered_ = true;
             }
+
+            break;
+
+        case Event::HOVERED:
+
+            hovered_ = true;
 
             break;
         }
@@ -50,8 +59,15 @@ public:
 
     void draw()
     {
-        Window::draw();
-        label.draw();
+        if (hovered_ && !pressed_) {
+            back_color_.lighter();
+            Window::draw();
+            back_color_.de_lighter();
+            hovered_ = false;
+        } else {
+            Window::draw();
+        }
+
     }
 
 

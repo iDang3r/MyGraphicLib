@@ -71,7 +71,7 @@ public:
 
     bool handle(const Event_t &event) 
     {
-        std::cout << "WINDOW HANDLER, x: " << event.x << ", y: " << event.y << std::endl;
+        // std::cout << "WINDOW HANDLER, x: " << event.x << ", y: " << event.y << std::endl;
         return true;
     }
 
