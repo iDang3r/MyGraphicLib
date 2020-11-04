@@ -49,9 +49,7 @@ public:
             break;
 
         case Event::HOVERED:
-
             hovered_ = true;
-
             break;
         }
 

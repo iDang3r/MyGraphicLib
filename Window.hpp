@@ -30,18 +30,11 @@ public:
         }
 
         for (auto object : sub_objects) {
-            // std::cout << "CHECK NEW SUB_OBJECT\n";
             Window* window = dynamic_cast<Window*>(object);
             if (window == nullptr) {
                 continue;
             }
 
-            // Event_t new_event(event.id, event.x - window->start_.x, event.y - window->start_.y);
-            // if (new_event.x < 0 || new_event.y < 0) {
-            //     continue;
-            // }
-
-            // bool u = window->check_mouse(new_event);
             bool u = window->check_mouse(event);
 
             if (u) {

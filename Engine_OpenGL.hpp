@@ -150,8 +150,8 @@ public:
 
         // SPACE: 14.0  RETINA: 9.0
         double str_height = 9.0 / window_height;           
-        // SPACE: 9.0   RETINA: 6.0
-        double str_width  = length * 5.6 / window_width;    
+        // SPACE: 9.0   RETINA: 5.0
+        double str_width  = length * 5.0 / window_width;    
 
         drawText(str, length, start_.x + width / 2 - str_width / 2, start_.y + height / 2 - str_height / 2);
     }
