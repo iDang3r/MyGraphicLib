@@ -1,6 +1,9 @@
-#pragma once
+// #pragma once
+#ifndef HELP_CLASSES_HPP
+#define HELP_CLASSES_HPP
 
-#define w(x) std::cout << #x << ": " << x << std::endl; 
+#define ww(x) std::cout << #x << ": " << x << std::endl; 
+#define ws(x) std::cout << x << std::endl;
 
 double H(int hex) {
     return static_cast<double>(hex) / 255; 
@@ -15,10 +18,10 @@ public:
 
     Point(double x, double y) : x(x), y(y) {}
 
-    void set() const 
-    {
-        glVertex2d(x, y);
-    }
+    // void set() const 
+    // {
+    //     glVertex2d(x, y);
+    // }
 
     Point& operator+=(const Point &p) 
     {
@@ -82,6 +85,22 @@ std::ostream& operator<<(std::ostream &out, const Point &point)
     return out;
 }
 
+#pragma pack(push, 1)
+class Pixel
+{
+public:
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+    uint8_t a;
+
+    Pixel(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0xFF) : 
+        r(r), g(g), b(b), a(a) 
+    {}
+
+};
+#pragma pack(pop)
+
 class Color 
 {
 public:
@@ -95,10 +114,10 @@ public:
     explicit Color(double r, double g, double b, double a = 1.0) : r(r),    g(g),    b(b),    a(a)    {}
     explicit Color(int    r, int    g, int    b, int    a = 255) : r(H(r)), g(H(g)), b(H(b)), a(H(a)) {} 
 
-    void set() const 
-    {
-        glColor3d(r, g, b);
-    }
+    // void set() const 
+    // {
+    //     glColor3d(r, g, b);
+    // }
 
     void inverse()
     {
@@ -121,20 +140,28 @@ public:
         b /= light_const;
     }
 
+    sf::Color sf() const
+    {
+        return sf::Color   (static_cast<uint8_t>(r * 255),
+                            static_cast<uint8_t>(g * 255),
+                            static_cast<uint8_t>(b * 255),
+                            static_cast<uint8_t>(a * 255));
+    }
+
 };
-const double Color::light_const = 1.4;
+const double Color::light_const = 1.21;
 
 std::ostream& operator<<(std::ostream &out, const Color &color)
 {
-    out << color.r << " " << color.g << " " << color.b << " " << color.a << std::endl;
+    out << color.r << " " << color.g << " " << color.b << " " << color.a;
     return out;
 }
 
 namespace COLORS
 {
-    const Color red             (1.0,       0.0,        0.0);
-    const Color green           (0.0,       1.0,        0.0);
-    const Color blue            (0.0,       0.0,        1.0);
+    const Color red             (0.8,       0.0,        0.0);
+    const Color green           (0.0,       0.8,        0.0);
+    const Color blue            (0.0,       0.0,        0.8);
     const Color black           (0.0,       0.0,        0.0);
     const Color white           (1.0,       1.0,        1.0);
 
@@ -145,8 +172,34 @@ namespace COLORS
     const Color window          (1.0,       0.0,        0.0);
     const Color sys_window      (0.357,     0.357,      0.357);
     const Color sys_window_top  (0.16,      0.16,       0.16);
-    const Color button          (H(0xFF),   H(0x73),    H(0x73));
+    const Color button          (H(0xFF),   H(0x5F),    H(0x5F));
+
+    const Color scroll_back     (H(0x34),   H(0x35),    H(0x64));
+    const Color scroll_slider   (H(0x9A),   H(0x7C),    H(0xAD));
+
+    const Color tool_manager_fr (H(0xBF),   H(0xE5),    H(0xE0));
+    const Color tool_manager    (H(0xE6),   H(0xD5),    H(0x97));
+
+    const Color painter         (H(0xC6),   H(0xE3),    H(0xB8));
 
     const Color main_background (H(0xFF),   H(0xD0),    H(0x7B),    0.3);
     
 } // namespace COLORS
+
+struct Pixel_array
+{
+    Pixel* start  = NULL;
+    int    width  = 0;
+    int    height = 0; 
+};
+
+struct Visible_part 
+{
+    int start_x = 0;
+    int start_y = 0;
+    int width   = 0;
+    int height  = 0;
+};
+
+
+#endif // HELP_CLASSES_HPP

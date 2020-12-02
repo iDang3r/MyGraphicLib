@@ -24,14 +24,17 @@ public:
     {
         RESERVED,
         HOVERED,
+        UNHOVERED,
         CLICK,
         RELEASE,
         DOUBLE_CLICK,
+        MOUSE_MOVE,
 
         // don't touch
         num_event_types
     };
 
+    static bool hover_disable;
     static std::queue<Event_t> queue;
 
     static bool empty()
@@ -43,6 +46,9 @@ public:
     {
         Event_t ret = queue.front();
         queue.pop();
+        if (hover_disable && (ret.id == HOVERED || ret.id == UNHOVERED)) {
+            ret.id = RESERVED;
+        }
         return ret;
     }
 
@@ -53,3 +59,4 @@ public:
 
 };
 std::queue<Event_t> Event::queue;
+bool Event::hover_disable = false;

@@ -90,12 +90,12 @@ public:
     static int init();
     static int terminate();
 
-    static int is_run();
+    static int is_run(); 
 
     static void draw_rectangle(Point start, double width, double height, const Color &color = Color(1.0, 1.0, 1.0))
     {
         start.OpenGL_fit();
-        width *= 2;
+        width  *= 2;
         height *= 2;
 
         color.set();
@@ -112,8 +112,8 @@ public:
 
     static void draw_square(Point start, double width, const Color &color = Color(1.0, 1.0, 1.0)) 
     {
-        start.OpenGL_fit();
-        width *= 2;
+        // start.OpenGL_fit();
+        // width *= 2;
 
         double height = width * window_w_to_h;
 
@@ -149,17 +149,24 @@ public:
         }
 
         // SPACE: 14.0  RETINA: 9.0
-        double str_height = 9.0 / window_height;           
+        double str_height = 14.0 / window_height;           
         // SPACE: 9.0   RETINA: 5.0
-        double str_width  = length * 5.0 / window_width;    
+        double str_width  = length * 9.0 / window_width;    
 
         drawText(str, length, start_.x + width / 2 - str_width / 2, start_.y + height / 2 - str_height / 2);
+    }
+
+    static void set_viewport(const Point &start_, double width, double height)
+    {
+
     }
 
     static void before_rendering()
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the buffers
         glClearColor(H(0xFF), H(0xD0), H(0x7B), 0.3);
+
+        glViewport(0, 0, window_width, window_height);
     }
 
     static void after_rendering()
@@ -207,14 +214,18 @@ int Engine_OpenGL::init()
 
     glTranslatef(-1.0, -1.0, 0);
 
+    // glViewport(0, 0, (double)window_width / 3, (double)window_height / 2);
+
     return 0;
 }
 
-int Engine_OpenGL::terminate() {
+int Engine_OpenGL::terminate() 
+{
     glfwTerminate();
     return 0;
 }
 
-int Engine_OpenGL::is_run() {
+int Engine_OpenGL::is_run() 
+{
     return !glfwWindowShouldClose(main_window_);
 }

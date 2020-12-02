@@ -6,7 +6,7 @@ private:
 public:
 
     int id_;
-    std::set<Object*> sub_objects;
+    std::vector<Object*> sub_objects;
 
     Object() : id_(Engine::valid_id_++)
     {
@@ -19,6 +19,18 @@ public:
     virtual bool handle(const Event_t& event)
     {
         return false;
+    }
+
+    virtual bool check_mouse(const Event_t &event) = 0;
+
+    virtual void close()
+    {
+        for (auto child : sub_objects) {
+            child->close();
+            // Have to delete from subscribes !!!
+            // delete child;
+        }
+        all_objects[id_] = NULL;
     }
 
 };

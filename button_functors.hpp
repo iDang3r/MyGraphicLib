@@ -1,7 +1,5 @@
 #pragma once
 
-// #include "Button.hpp"
-
 class First_functor
 {
 public:
