@@ -54,7 +54,20 @@ public:
 
     void move(const Point& delta) 
     {
-        
+        int delta_x = visible_part_.width  * delta.x / width_;
+        int delta_y = visible_part_.height * delta.y / height_;
+
+        if (delta_x > 0) {
+            visible_part_.x = std::min(visible_part_.x + delta_x, pixel_array_.width - visible_part_.width);
+        } else {
+            visible_part_.x = std::max(visible_part_.x + delta_x, 0);
+        }
+
+        if (delta_y > 0) {
+            visible_part_.y = std::min(visible_part_.y + delta_y, pixel_array_.height - visible_part_.height);
+        } else {
+            visible_part_.y = std::max(visible_part_.y + delta_y, 0);
+        }
     }
 
 

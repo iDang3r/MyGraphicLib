@@ -45,7 +45,7 @@ public:
         thickness_ = thickness;
     }
 
-    virtual void use(Canvas canvas, Event_t event) = 0;
+    virtual void use(const Canvas &canvas, Event_t event) = 0;
 
 };
 
@@ -57,7 +57,7 @@ public:
     Hand_tool() : Tool(COLORS::clear, 0.0, Tool::HAND) 
         {}
 
-    void use(Canvas canvas, Event_t event)
+    void use(const Canvas &canvas, Event_t event)
     {
         if (event.id == Event::CLICK) {
             fix_point = Point(event.x, event.y);
@@ -66,7 +66,7 @@ public:
         }
 
         if (using_ && event.id == Event::MOUSE_MOVE) {
-            
+            canvas.move(Point(event.x, event.y) - fix_point);
             fix_point = Point(event.x, event.y);
             return;
         }
