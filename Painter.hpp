@@ -17,11 +17,11 @@ public:
     {
         subscribes[Event::MOUSE_MOVE].insert(this);
 
-        int canvas_id = Engine::create_canvas(id_, Point(0.05, 0.4), 0.9, 0.55);
-        canvas = dynamic_cast<Canvas*>(all_objects[canvas_id]);
-
-        int tool_manger_id = Engine::create_tool_manager(id_, Point(0.05, 0.05), 0.9, 0.3);
+        int tool_manger_id = Engine::create_tool_manager(id_, Point(0.84, 0.02), 0.14, 0.96);
         tool_manager = dynamic_cast<Tool_manager*>(all_objects[tool_manger_id]);
+
+        int canvas_id = Engine::create_canvas(id_, Point(0.02, 0.02), 0.8, 0.96);
+        canvas = dynamic_cast<Canvas*>(all_objects[canvas_id]);
     }
 
     ~Painter()

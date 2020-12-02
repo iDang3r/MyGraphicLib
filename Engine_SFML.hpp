@@ -224,5 +224,5 @@ public:
 };
 
 sf::RenderWindow Engine_SFML::main_window_(sf::VideoMode(window_width, window_height), "by DED_32");
-sf::Font Engine_SFML::font;
+sf::Font  Engine_SFML::font;
 sf::Clock Engine_SFML::clock;

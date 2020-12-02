@@ -76,6 +76,7 @@ public:
             ws("Hand click");
             fix_point = Point(event.x, event.y);
             using_ = true;
+            Event::hover_disable = true;
             return;
         }
 
@@ -87,6 +88,7 @@ public:
 
         if (using_ && event.id == Event::RELEASE) {
             using_ = false;
+            Event::hover_disable = false;
             return;
         }
 

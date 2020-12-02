@@ -180,7 +180,9 @@ namespace COLORS
     const Color tool_manager_fr (H(0xBF),   H(0xE5),    H(0xE0));
     const Color tool_manager    (H(0xE6),   H(0xD5),    H(0x97));
 
-    const Color painter         (H(0xC6),   H(0xE3),    H(0xB8));
+    const Color tool            (H(0x78),   H(0xB8),    H(0xB2));
+
+    const Color painter         (H(0x96),   H(0xB5),    H(0x8A));
 
     const Color main_background (H(0xFF),   H(0xD0),    H(0x7B),    0.3);
     

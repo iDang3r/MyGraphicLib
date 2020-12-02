@@ -2,15 +2,16 @@
 
 #include "Window.hpp"
 
-class Image : public Window {
+class Image : public Window 
+{
 private:
     sf::Image   img_;
     sf::Texture texture_;
     sf::Sprite  sprite_;
 public:
     
-    Image(Point start, double width, double height, const char* source) :
-        Window(start, width, height, COLORS::clear) 
+    Image(Point start, double width, double height, const char* source, const Color& color = COLORS::clear) :
+        Window(start, width, height, color) 
     {
         if (!img_.loadFromFile(source)) {
             dump(DUMP_INFO, "error: image open from source");
@@ -40,6 +41,7 @@ public:
 
     void draw()
     {
+        Window::draw();
         main_window_.draw(sprite_);
     }
 

@@ -30,7 +30,7 @@ public:
         Engine::create_scroll_bar(id, Point(0.98, 0.0), 0.02, 1.0);
 
         int paint_id = Engine::create_system_window(Point(0.45, 0.4), 0.5, 0.55);
-        Engine::create_painter(paint_id, Point(0.1, 0.1), 0.8, 0.8);
+        Engine::create_painter(paint_id, Point(0.0, 0.0), 1.0, 1.0);
 
     }
 

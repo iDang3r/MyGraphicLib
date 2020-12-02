@@ -13,15 +13,20 @@ public:
     Tool_manager(const Point &start, double width, double height) :
         Window(start, width, height, COLORS::tool_manager)
     {
+        active_tool = 0;
         tools.push_back(new Hand_tool());
         tools.push_back(new Zoom_up_tool());
-        active_tool = 1;
     }
 
     void use_tool(Canvas &canvas, const Event_t &event)
     {
         // ws("USE active tool");
         tools[active_tool]->use(canvas, event);
+    }
+
+    void add_tool()
+    {
+        
     }
 
 };

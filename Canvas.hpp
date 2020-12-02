@@ -37,7 +37,7 @@ public:
         int width_px  = width_  * window_width;
         int height_px = height_ * window_height;
 
-        visible_part_.width  = pixel_array_.width;
+        visible_part_.width  = pixel_array_.width / 2;
         visible_part_.height = visible_part_.width * height_px / width_px + 1;
     }
 
@@ -73,6 +73,11 @@ public:
 
     void zoom_up(const Point& point)
     {
+        int point_x = visible_part_.width  * point.x / width_;
+        int point_y = visible_part_.height * point.y / height_;
+
+
+
         visible_part_.width  /= zoom_coef;
         visible_part_.height /= zoom_coef;
     }
