@@ -14,7 +14,8 @@ public:
         Window(start, width, height, COLORS::tool_manager)
     {
         tools.push_back(new Hand_tool());
-        active_tool = 0;
+        tools.push_back(new Zoom_up_tool());
+        active_tool = 1;
     }
 
     void use_tool(Canvas &canvas, const Event_t &event)

@@ -93,3 +93,21 @@ public:
     }
 
 };
+
+class Zoom_up_tool : public Tool
+{
+public:
+
+    Zoom_up_tool() : Tool(COLORS::clear, 0.0, Tool::HAND) 
+        {}
+
+    void use(Canvas &canvas, const Event_t &event)
+    {
+        if (event.id == Event::CLICK) {
+            canvas.zoom_up(Point(event.x, event.y));
+            return;
+        }
+
+    }
+
+};

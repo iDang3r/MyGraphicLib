@@ -37,7 +37,7 @@ public:
         int width_px  = width_  * window_width;
         int height_px = height_ * window_height;
 
-        visible_part_.width  = pixel_array_.width / 3;
+        visible_part_.width  = pixel_array_.width;
         visible_part_.height = visible_part_.width * height_px / width_px + 1;
     }
 
@@ -69,6 +69,12 @@ public:
         } else {
             visible_part_.y = std::max(visible_part_.y + delta_y, 0);
         }
+    }
+
+    void zoom_up(const Point& point)
+    {
+        visible_part_.width  /= zoom_coef;
+        visible_part_.height /= zoom_coef;
     }
 
     bool handle(const Event_t &event)
