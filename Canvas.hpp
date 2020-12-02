@@ -31,8 +31,8 @@ public:
 
         image_container->get_pixel_array(pixel_array_.start, pixel_array_.width, pixel_array_.height);
 
-        visible_part_.start_x = 0;
-        visible_part_.start_y = 0;
+        visible_part_.x = 0;
+        visible_part_.y = 0;
 
         int width_px  = width_  * window_width;
         int height_px = height_ * window_height;
@@ -56,6 +56,7 @@ public:
     {
         int delta_x = visible_part_.width  * delta.x / width_;
         int delta_y = visible_part_.height * delta.y / height_;
+        delta_x *= -1;
 
         if (delta_x > 0) {
             visible_part_.x = std::min(visible_part_.x + delta_x, pixel_array_.width - visible_part_.width);
@@ -68,6 +69,15 @@ public:
         } else {
             visible_part_.y = std::max(visible_part_.y + delta_y, 0);
         }
+    }
+
+    bool handle(const Event_t &event)
+    {
+        if (event.id == Event::CLICK) {
+            return true;
+        }
+
+        return false;
     }
 
 

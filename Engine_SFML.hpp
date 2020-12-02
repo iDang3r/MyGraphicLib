@@ -193,12 +193,12 @@ public:
         int width_px  = width  * window_width;
         int height_px = height * window_height;
 
-        if (vis_part.start_x + vis_part.width > pix_arr.width) {
-            vis_part.width = pix_arr.width - vis_part.start_x;
+        if (vis_part.x + vis_part.width > pix_arr.width) {
+            vis_part.width = pix_arr.width - vis_part.x;
         }
 
-        if (vis_part.start_y + vis_part.height > pix_arr.height) {
-            vis_part.height = pix_arr.height - vis_part.start_y;
+        if (vis_part.y + vis_part.height > pix_arr.height) {
+            vis_part.height = pix_arr.height - vis_part.y;
         }
 
         sf::Texture texture;
@@ -206,7 +206,7 @@ public:
         texture.update((const sf::Uint8*)pix_arr.start, pix_arr.width,  pix_arr.height, 0, 0);
 
         sf::Sprite sprite(texture);
-        sprite.setTextureRect(sf::IntRect(vis_part.start_x, vis_part.start_y, vis_part.width, vis_part.height));
+        sprite.setTextureRect(sf::IntRect(vis_part.x, vis_part.y, vis_part.width, vis_part.height));
 
         double k = 0;
         if (sprite.getGlobalBounds().width / width > sprite.getGlobalBounds().height / height) {

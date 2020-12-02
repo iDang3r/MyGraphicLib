@@ -195,8 +195,8 @@ struct Pixel_array
 
 struct Visible_part 
 {
-    int start_x = 0;
-    int start_y = 0;
+    int x       = 0;
+    int y       = 0;
     int width   = 0;
     int height  = 0;
 };

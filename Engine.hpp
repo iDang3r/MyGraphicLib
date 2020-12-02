@@ -224,7 +224,7 @@ public:
         }
 
         Coordinates_convertion conv = convert_coordinates(start, width, height, window);
-        Canvas* new_tool_manager = new Canvas(conv.start, conv.width, conv.height);
+        Tool_manager* new_tool_manager = new Tool_manager(conv.start, conv.width, conv.height);
         
         window->sub_objects.push_back(new_tool_manager);
 
@@ -239,7 +239,7 @@ public:
         }
 
         Coordinates_convertion conv = convert_coordinates(start, width, height, window);
-        Canvas* new_painter = new Canvas(conv.start, conv.width, conv.height);
+        Painter* new_painter = new Painter(conv.start, conv.width, conv.height);
         
         window->sub_objects.push_back(new_painter);
 
