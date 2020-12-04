@@ -24,13 +24,13 @@ public:
         int width_px  = width  * window_width;
         int height_px = height * window_height;
 
-        double k = 0;
-        if (sprite_.getLocalBounds().width / width > sprite_.getLocalBounds().height / height) {
-            k = (double)width_px / sprite_.getLocalBounds().width;
+        double k1 = (double)width_px / sprite_.getLocalBounds().width;
+        double k2 = (double)height_px / sprite_.getLocalBounds().height;
+        double k = std::min(k1, k2);
+        if (k1 < k2) {
             start.y -= (height - k * sprite_.getLocalBounds().height / window_height) / 2;
             ws("@@@@@");
         } else {
-            k = (double)height_px / sprite_.getLocalBounds().height;
             start.x += (width - k * sprite_.getLocalBounds().width / window_width) / 2;
         }
 

@@ -8,3 +8,4 @@ public:
         std::cout << "----------------------> FUNCTOR was called" << std::endl;
     }
 };
+

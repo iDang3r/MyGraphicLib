@@ -19,11 +19,11 @@ public:
     } type;
 
     Color   color_;
-    double  thickness_;
+    int     thickness_;
     bool    using_      = false;  
     Point   fix_point   = Point(0.0, 0.0);
 
-    Tool(const Color &color, double thickness, Type enum_type) : color_(color), thickness_(thickness), type(enum_type) 
+    Tool(const Color &color, int thickness, Type enum_type) : color_(color), thickness_(thickness), type(enum_type) 
     {
         subscribes[Event::RELEASE].insert(this);
     }
@@ -38,7 +38,7 @@ public:
         color_ = color;
     }
 
-    void set_thickness(double thickness) 
+    void set_thickness(int thickness) 
     {
         thickness_ = thickness;
     }
@@ -87,6 +87,7 @@ public:
         }
 
         if (using_ && event.id == Event::RELEASE) {
+            ws("UN_Hand");
             using_ = false;
             Event::hover_disable = false;
             return;
@@ -100,7 +101,7 @@ class Zoom_up_tool : public Tool
 {
 public:
 
-    Zoom_up_tool() : Tool(COLORS::clear, 0.0, Tool::HAND) 
+    Zoom_up_tool() : Tool(COLORS::clear, 0.0, Tool::ZOOM_UP) 
         {}
 
     void use(Canvas &canvas, const Event_t &event)
@@ -111,5 +112,55 @@ public:
         }
 
     }
+
+};
+
+class Zoom_down_tool : public Tool
+{
+public:
+
+    Zoom_down_tool() : Tool(COLORS::clear, 0, Tool::ZOOM_DOWN) 
+        {}
+
+    void use(Canvas &canvas, const Event_t &event)
+    {
+        if (event.id == Event::CLICK) {
+            canvas.zoom_down(Point(event.x, event.y));
+            return;
+        }
+
+    }
+
+};
+
+class Brush_tool : public Tool
+{
+public:
+
+    Brush_tool() : Tool(COLORS::black, 10, Tool::BRUSH)
+        {}
+
+    void use(Canvas &canvas, const Event_t &event)
+    {
+        if (event.id == Event::CLICK) {
+            fix_point = Point(event.x, event.y);
+            using_ = true;
+            Event::hover_disable = true;
+            return;
+        }
+
+        if (using_ && event.id == Event::MOUSE_MOVE) {
+            canvas.draw_line(fix_point, Point(event.x, event.y), color_, thickness_);
+            fix_point = Point(event.x, event.y);
+            return;
+        }
+
+        if (using_ && event.id == Event::RELEASE) {
+            using_ = false;
+            Event::hover_disable = false;
+            return;
+        }
+    }
+
 
 };

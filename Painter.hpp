@@ -51,7 +51,7 @@ public:
         //     }
         // }
 
-        if (canvas->check_mouse(event)) {
+        if (canvas->check_mouse(event) || event.id == Event::RELEASE) {
             tool_manager->use_tool(*canvas, event);
             return true;
         }

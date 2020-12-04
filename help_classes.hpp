@@ -5,6 +5,8 @@
 #define ww(x) std::cout << #x << ": " << x << std::endl; 
 #define ws(x) std::cout << x << std::endl;
 
+#define SQR(x) ((x) * (x))
+
 double H(int hex) {
     return static_cast<double>(hex) / 255; 
 }
@@ -85,22 +87,6 @@ std::ostream& operator<<(std::ostream &out, const Point &point)
     return out;
 }
 
-#pragma pack(push, 1)
-class Pixel
-{
-public:
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
-    uint8_t a;
-
-    Pixel(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0xFF) : 
-        r(r), g(g), b(b), a(a) 
-    {}
-
-};
-#pragma pack(pop)
-
 class Color 
 {
 public:
@@ -150,6 +136,32 @@ public:
 
 };
 const double Color::light_const = 1.21;
+
+#pragma pack(push, 1)
+class Pixel
+{
+public:
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+    uint8_t a;
+
+    Pixel(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0xFF) : 
+        r(r), g(g), b(b), a(a) 
+    {}
+
+    Pixel& operator=(const Color &color)
+    {
+        r = static_cast<uint8_t>(color.r * 255);
+        g = static_cast<uint8_t>(color.g * 255);
+        b = static_cast<uint8_t>(color.b * 255);
+        a = static_cast<uint8_t>(color.a * 255);
+
+        return *this;
+    }
+
+};
+#pragma pack(pop)
 
 std::ostream& operator<<(std::ostream &out, const Color &color)
 {
