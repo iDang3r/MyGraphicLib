@@ -52,10 +52,14 @@ public:
         draw_sub_windows();
     }
 
-    void move(const Point& delta) 
+    bool move(const Point& delta) 
     {
         int delta_x = visible_part_.width  * delta.x / width_;
         int delta_y = visible_part_.height * delta.y / height_;
+        if (delta_x == 0 && delta_y == 0) {
+            return false;
+        }
+
         delta_x *= -1;
 
         if (delta_x > 0) {
@@ -69,6 +73,8 @@ public:
         } else {
             visible_part_.y = std::max(visible_part_.y + delta_y, 0);
         }
+        
+        return true;
     }
 
     void draw_line(const Point &begin, const Point &end, const Color &color, int thickness)
@@ -141,24 +147,26 @@ public:
 
     void zoom_up(const Point& point)
     {
-        int point_x = visible_part_.width  * point.x / width_;
-        int point_y = visible_part_.height * point.y / height_;
-
-
+        int point_x = visible_part_.width  * (0 + (point.x - start_.x) / width_);
+        int point_y = visible_part_.height * (1 - (point.y - start_.y) / height_);
 
         visible_part_.width  /= zoom_coef;
         visible_part_.height /= zoom_coef;
+
+        visible_part_.x += point_x * (1 - 1 / zoom_coef);
+        visible_part_.y += point_y * (1 - 1 / zoom_coef);
     }
 
     void zoom_down(const Point& point)
     {
-        int point_x = visible_part_.width  * point.x / width_;
-        int point_y = visible_part_.height * point.y / height_;
-
-
+        int point_x = visible_part_.width  * (0 + (point.x - start_.x) / width_);
+        int point_y = visible_part_.height * (1 - (point.y - start_.y) / height_);
 
         visible_part_.width  *= zoom_coef;
         visible_part_.height *= zoom_coef;
+
+        visible_part_.x -= point_x * (zoom_coef - 1);
+        visible_part_.y -= point_y * (zoom_coef - 1);
 
         if (visible_part_.x + visible_part_.width > pixel_array_.width) {
             visible_part_.x = pixel_array_.width - visible_part_.width;

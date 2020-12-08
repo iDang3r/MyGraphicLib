@@ -93,8 +93,9 @@ public:
         }
 
         if (using_ && event.id == Event::MOUSE_MOVE) {
-            canvas.move(Point(event.x, event.y) - fix_point);
-            fix_point = Point(event.x, event.y);
+            if (canvas.move(Point(event.x, event.y) - fix_point)) {
+                fix_point = Point(event.x, event.y);
+            }
             return;
         }
 
