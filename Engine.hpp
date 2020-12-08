@@ -119,6 +119,21 @@ public:
         return new_sys_window->id_;
     }
 
+    static int create_window(int window_id, const Point &start, double width, double height, const Color &color = COLORS::window) 
+    {
+        Window* window = dynamic_cast<Window*>(all_objects[window_id]);
+        if (window == nullptr) {
+            return -1;
+        }
+
+        Coordinates_convertion conv = convert_coordinates(start, width, height, window);
+        Window* new_window = new Window(conv.start, conv.width, conv.height, color);
+        
+        window->sub_objects.push_back(new_window);
+
+        return new_window->id_;
+    }
+
     static int create_label(int window_id, const Point &start, double width, double height, const char* label) 
     {
         Window* window = dynamic_cast<Window*>(all_objects[window_id]);
@@ -199,6 +214,17 @@ public:
         window->sub_objects.push_back(new_scroll_bar);
 
         return new_scroll_bar->id_;
+    }
+
+    static int set_window_color(int window_id, const Color &color)
+    {
+        Window* window = dynamic_cast<Window*>(all_objects[window_id]);
+        if (window == nullptr) {
+            dump(DUMP_INFO, "False window id to set color");
+            return -1;
+        }
+
+        window->back_color_ = color;
     }
 
     static int create_canvas(int window_id, const Point &start, double width, double height) 

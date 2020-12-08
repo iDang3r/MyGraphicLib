@@ -23,6 +23,8 @@ public:
     bool    using_      = false;  
     Point   fix_point   = Point(0.0, 0.0);
 
+    bool is_active = false;
+
     Tool(const Color &color, int thickness, Type enum_type) : color_(color), thickness_(thickness), type(enum_type) 
     {
         subscribes[Event::RELEASE].insert(this);
@@ -41,6 +43,16 @@ public:
     void set_thickness(int thickness) 
     {
         thickness_ = thickness;
+    }
+
+    void set_active()
+    {
+        is_active = true;
+    }
+
+    void unset_activ()
+    {
+        is_active = false;
     }
 
     bool handle(const Event_t& event) 

@@ -73,9 +73,9 @@ public:
 
     void draw_line(const Point &begin, const Point &end, const Color &color, int thickness)
     {
-        int begin_x = visible_part_.width  *      (begin.x - start_.x) / width_;
+        int begin_x = visible_part_.width  * (0 + (begin.x - start_.x) / width_);
         int begin_y = visible_part_.height * (1 - (begin.y - start_.y) / height_);
-        int end_x =   visible_part_.width  *      (end.x   - start_.x) / width_;
+        int end_x =   visible_part_.width  * (0 + (end.x   - start_.x) / width_);
         int end_y =   visible_part_.height * (1 - (end.y   - start_.y) / height_);
 
         begin_x += visible_part_.x;
@@ -83,34 +83,58 @@ public:
         end_x   += visible_part_.x;
         end_y   += visible_part_.y;
 
-        if (begin_x > end_x) {
-            std::swap(begin_x, end_x);
-            std::swap(begin_y, end_y);
-        }
+        if (std::abs(begin_x - end_x) >= std::abs(begin_y - end_y)) {
 
-        if (end_x - begin_x) {
-            return;
-        }
+            if (begin_x > end_x) {
+                std::swap(begin_x, end_x);
+                std::swap(begin_y, end_y);
+            }
 
-        for (int i = begin_x; i <= end_x; ++i) {
-
-            int j = begin_y + (end_y - begin_y) * (i - begin_x) / (end_x - begin_x);
-
-            for (int p_i = std::max(i - thickness, 0); p_i <= std::min(i + thickness, pixel_array_.width); ++p_i) {
-                for (int p_j = std::max(j - thickness, 0); p_j <= std::min(j + thickness, pixel_array_.height); ++p_j) {
-                    if (SQR(p_i - i) + SQR(p_j - j) <= SQR(thickness)) {
-                        pixel_array_.start[p_i * pixel_array_.width + p_j] = color;
+            // draw one point, if Point_begin == Point_end
+            for (int p_i = std::max(begin_x - thickness, 0); p_i <= std::min(begin_x + thickness, pixel_array_.width); ++p_i) {
+                for (int p_j = std::max(begin_y - thickness, 0); p_j <= std::min(begin_y + thickness, pixel_array_.height); ++p_j) {
+                    if (SQR(p_i - begin_x) + SQR(p_j - begin_y) <= SQR(thickness)) {
+                        pixel_array_.start[p_j * pixel_array_.width + p_i] = color;
                     }
                 }
             }
 
+            for (int i = begin_x + 1; i <= end_x; ++i) {
+
+                int j = begin_y + (end_y - begin_y) * (i - begin_x) / (end_x - begin_x);
+
+                for (int p_i = std::max(i - thickness, 0); p_i <= std::min(i + thickness, pixel_array_.width); ++p_i) {
+                    for (int p_j = std::max(j - thickness, 0); p_j <= std::min(j + thickness, pixel_array_.height); ++p_j) {
+                        if (SQR(p_i - i) + SQR(p_j - j) <= SQR(thickness)) {
+                            pixel_array_.start[p_j * pixel_array_.width + p_i] = color;
+                        }
+                    }
+                }
+
+            }
+
+        } else {
+
+            if (begin_y > end_y) {
+                std::swap(begin_x, end_x);
+                std::swap(begin_y, end_y);
+            }
+
+            for (int j = begin_y; j <= end_y; ++j) {
+
+                int i = begin_x + (end_x - begin_x) * (j - begin_y) / (end_y - begin_y);
+
+                for (int p_i = std::max(i - thickness, 0); p_i <= std::min(i + thickness, pixel_array_.width); ++p_i) {
+                    for (int p_j = std::max(j - thickness, 0); p_j <= std::min(j + thickness, pixel_array_.height); ++p_j) {
+                        if (SQR(p_i - i) + SQR(p_j - j) <= SQR(thickness)) {
+                            pixel_array_.start[p_j * pixel_array_.width + p_i] = color;
+                        }
+                    }
+                }
+
+            }
+
         }
-
-        // ww(begin_x);
-        // ww(begin_y);
-        // ww(visible_part_.width);
-        // ww(visible_part_.height);
-
 
 
     }
