@@ -42,6 +42,11 @@ public:
         return handle(event);
     }
 
+    void set_color(const Color& color)
+    {
+        back_color_ = color;
+    }
+
     virtual void set_viewport()
     {
         // glViewport(start_.x * Engine::window_width, start_.y * Engine::window_height, width_ * Engine::window_width, height_ * Engine::window_height);

@@ -4,24 +4,29 @@
 
 #include "Canvas.hpp"
 #include "Tool_manager.hpp"
+#include "Palette.hpp"
 
 class Painter : public Window
 {
 private:
 public:
-    Canvas*         canvas;
-    Tool_manager*   tool_manager;
+    Canvas*         canvas       = nullptr;
+    Tool_manager*   tool_manager = nullptr;
+    Palette*        palette      = nullptr;
 
     Painter(const Point &start, double width, double height) :
         Window(start, width, height, COLORS::painter)
     {
         subscribes[Event::MOUSE_MOVE].insert(this);
 
-        int tool_manger_id = Engine::create_tool_manager(id_, Point(0.84, 0.02), 0.14, 0.96);
-        tool_manager = dynamic_cast<Tool_manager*>(all_objects[tool_manger_id]);
-
         int canvas_id = Engine::create_canvas(id_, Point(0.02, 0.02), 0.8, 0.96);
         canvas = dynamic_cast<Canvas*>(all_objects[canvas_id]);
+
+        int palette_id = Engine::create_palette(id_, Point(0.84, 0.82), 0.14, 0.16);
+        palette = dynamic_cast<Palette*>(all_objects[palette_id]);
+
+        int tool_manger_id = Engine::create_tool_manager(id_, Point(0.84, 0.02), 0.14, 0.78, palette->color);
+        tool_manager = dynamic_cast<Tool_manager*>(all_objects[tool_manger_id]);
     }
 
     ~Painter()
@@ -43,20 +48,13 @@ public:
             return false;
         }
 
-        // for (auto it = sub_objects.rbegin(); it != sub_objects.rend(); ++it) {
-
-        //     bool u = (*it)->check_mouse(event);
-        //     if (u) {
-        //         return true;
-        //     }
-        // }
-
         if (canvas->check_mouse(event) || event.id == Event::RELEASE) {
             tool_manager->use_tool(*canvas, event);
             return true;
         }
 
         tool_manager->check_mouse(event);
+        palette->check_mouse(event);
 
         return handle(event);
     }

@@ -29,7 +29,7 @@ public:
         double k = std::min(k1, k2);
         if (k1 < k2) {
             start.y -= (height - k * sprite_.getLocalBounds().height / window_height) / 2;
-            ws("@@@@@");
+            // ws("@@@@@");
         } else {
             start.x += (width - k * sprite_.getLocalBounds().width / window_width) / 2;
         }

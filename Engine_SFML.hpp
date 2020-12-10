@@ -117,7 +117,7 @@ public:
             }
             
         }
-        main_window_.clear(COLORS::main_background.sf());
+        main_window_.clear(sf(COLORS::main_background));
     }
 
     static void after_rendering() 
@@ -138,6 +138,14 @@ public:
         return sf::Vector2f(window_width * point.x, window_height * (1 - point.y));
     }
 
+    static sf::Color sf(const Color &color)
+    {
+        return sf::Color   (static_cast<uint8_t>(color.r * 255),
+                            static_cast<uint8_t>(color.g * 255),
+                            static_cast<uint8_t>(color.b * 255),
+                            static_cast<uint8_t>(color.a * 255));
+    }
+
     static Point get_mouse_pos()
     {
         sf::Vector2i ret = sf::Mouse::getPosition(main_window_);
@@ -149,7 +157,7 @@ public:
         start.y += height;
 
         sf::RectangleShape rect(sf::Vector2f(width * window_width, height * window_height));
-        rect.setFillColor(color.sf());
+        rect.setFillColor(sf(color));
         rect.setPosition(sf(start));
         main_window_.draw(rect);
     }
@@ -168,7 +176,7 @@ public:
         start.x -= radius;
         sf::CircleShape circle(radius * window_width);
         circle.setPosition(sf(start));
-        circle.setFillColor(color.sf());
+        circle.setFillColor(sf(color));
         main_window_.draw(circle);
     }
 

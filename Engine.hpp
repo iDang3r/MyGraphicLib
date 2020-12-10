@@ -1,8 +1,13 @@
 #pragma once
 
 #include <string>
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
 // #include "Engine_OpenGL.hpp"
 #include "Engine_SFML.hpp"
+
+#include "ColorPanel/MyCPPClass.h"
 
 // using Engine_t = Engine_OpenGL;
 using Engine_t = Engine_SFML;
@@ -225,6 +230,8 @@ public:
         }
 
         window->back_color_ = color;
+
+        return 0;
     }
 
     static int create_canvas(int window_id, const Point &start, double width, double height) 
@@ -242,7 +249,7 @@ public:
         return new_canvas->id_;
     }
 
-    static int create_tool_manager(int window_id, const Point &start, double width, double height) 
+    static int create_tool_manager(int window_id, const Point &start, double width, double height, Color &during_color) 
     {
         Window* window = dynamic_cast<Window*>(all_objects[window_id]);
         if (window == nullptr) {
@@ -250,11 +257,26 @@ public:
         }
 
         Coordinates_convertion conv = convert_coordinates(start, width, height, window);
-        Tool_manager* new_tool_manager = new Tool_manager(conv.start, conv.width, conv.height);
+        Tool_manager* new_tool_manager = new Tool_manager(conv.start, conv.width, conv.height, during_color);
         
         window->sub_objects.push_back(new_tool_manager);
 
         return new_tool_manager->id_;
+    }
+
+    static int create_palette(int window_id, const Point &start, double width, double height) 
+    {
+        Window* window = dynamic_cast<Window*>(all_objects[window_id]);
+        if (window == nullptr) {
+            return -1;
+        }
+
+        Coordinates_convertion conv = convert_coordinates(start, width, height, window);
+        Palette* new_palette = new Palette(conv.start, conv.width, conv.height);
+        
+        window->sub_objects.push_back(new_palette);
+
+        return new_palette->id_;
     }
 
     static int create_painter(int window_id, const Point &start, double width, double height) 

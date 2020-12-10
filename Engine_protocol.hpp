@@ -33,8 +33,8 @@ public:
     static void draw_text     (const Point&, double, double, const char*, int)  {} 
     
 };
-int     Engine_protocol::window_width    = 1920; // 1400
-int     Engine_protocol::window_height   = 1080; // 800
+int     Engine_protocol::window_width    = 2560; // 1400
+int     Engine_protocol::window_height   = 1250; // 800
 double  Engine_protocol::window_w_to_h   = (double)window_width / window_height;
 
 double  Engine_protocol::angle_circle_x  = 0.007;

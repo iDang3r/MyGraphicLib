@@ -11,10 +11,13 @@ private:
 public:
     int active_tool = 0;
     std::vector<std::pair<Tool*, int>> tools;
+    Color& during_color;
 
-    Tool_manager(const Point &start, double width, double height) :
-        Window(start, width, height, COLORS::tool_manager)
+    Tool_manager(const Point &start, double width, double height, Color &during_color) :
+        Window(start, width, height, COLORS::tool_manager), during_color(during_color)
     {
+        Engine::create_label(id_, Point(0.0, 0.88), 1.0, 0.1, "Tools");
+
         double up_size = 0.02 + 0.35 / height_ * width_ * Engine::window_w_to_h;
         add_tool(Point(0.1,  0.02),           0.35, new Zoom_down_tool(), "zoom_down.png");
         add_tool(Point(0.55, 0.02),           0.35, new Zoom_up_tool(),   "zoom_up.png");
@@ -26,6 +29,7 @@ public:
 
     void use_tool(Canvas &canvas, const Event_t &event)
     {
+        tools[active_tool].first->set_color(during_color);
         tools[active_tool].first->use(canvas, event);
     }
 
