@@ -15,10 +15,30 @@ enum format_colors {
     white       = 37,
 };
 
+#include "File_manager.hpp"
+
 int main()
 {
+    File_manager Q("./");
 
-    cout << "\033[1;" << cyan << "m" << "bold red text" << "\033[0m\n";
+    cout << Q.get_current_dir() << endl;
+    for (int i = 0; i < Q.get_dir_size(); ++i) {
+        cout << i << ": " << Q.get_subdir_name(i) << endl;
+    }
+
+    while (1) {
+        cout << "go dir: ";
+        int num = 0;
+        cin >> num;
+
+        Q.go_to_subdir(num);
+
+        cout << Q.get_current_dir() << endl;
+        for (int i = 0; i < Q.get_dir_size(); ++i) {
+            cout << i << ": type-" << Q.subdirs[i].type << " " << Q.get_subdir_name(i) << endl;
+        }
+
+    }
 
     return 0;
 }

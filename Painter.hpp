@@ -25,7 +25,7 @@ public:
         int palette_id = Engine::create_palette(id_, Point(0.84, 0.82), 0.14, 0.16);
         palette = dynamic_cast<Palette*>(all_objects[palette_id]);
 
-        int tool_manger_id = Engine::create_tool_manager(id_, Point(0.84, 0.02), 0.14, 0.78, palette->color);
+        int tool_manger_id = Engine::create_tool_manager(id_, Point(0.84, 0.02), 0.14, 0.78, palette->color, *canvas);
         tool_manager = dynamic_cast<Tool_manager*>(all_objects[tool_manger_id]);
     }
 

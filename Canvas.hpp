@@ -22,6 +22,8 @@ public:
 
     void load_from_image(const char* source) 
     {
+        ws("LOADING IMAGE FROM:");
+        ww(source);
         if (image_container) {
             dump(DUMP_INFO, "Image already exists");
             return;
@@ -39,6 +41,12 @@ public:
 
         visible_part_.width  = pixel_array_.width / 2;
         visible_part_.height = visible_part_.width * height_px / width_px;
+    }
+
+    void save_to_image(const char* source)
+    {
+        ws("SAVING IMAGE TO:");
+        ww(source);
     }
 
     void draw()

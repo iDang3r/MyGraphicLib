@@ -20,9 +20,9 @@ public:
     static int init()
     {
         main_window_.setFramerateLimit(144);
-        if (!font.loadFromFile("/System/Library/Fonts/Supplemental/Herculanum.ttf")) {
-            dump(DUMP_INFO, "error: Font open");
-            abort();
+        if (!font.loadFromFile("/System/Library/Fonts/Supplemental/Andale Mono.ttf")) {
+            dump(DUMP_INFO, "Font not open");
+            exit(1);
         }
         dump(DUMP_INFO, "init");
         ws("INIT");
@@ -112,6 +112,31 @@ public:
                     break;
                 }
 
+
+                case sf::Event::KeyPressed: {
+
+                    if (event.key.code == sf::Keyboard::Up) {
+                        Event::push(Event_t(Event::BUTTON_UP));
+                    }
+
+                    if (event.key.code == sf::Keyboard::Down) {
+                        Event::push(Event_t(Event::BUTTON_DOWN));
+                    }
+
+                    if (event.key.code == sf::Keyboard::Left) {
+                        Event::push(Event_t(Event::BUTTON_LEFT));
+                    }
+
+                    if (event.key.code == sf::Keyboard::Right) {
+                        Event::push(Event_t(Event::BUTTON_RIGHT));
+                    }
+
+                    if (event.key.code == sf::Keyboard::Enter) {
+                        Event::push(Event_t(Event::BUTTON_ENTER));
+                    }
+
+                    break;
+                }
                 
 
             }
@@ -180,7 +205,7 @@ public:
         main_window_.draw(circle);
     }
 
-    static void draw_text(const Point &start_, double width, double height, const char* str, int length = 0)
+    static void draw_text(const Point &start_, double width, double height, const char* str, int font_size = 20, int length = 0)
     {
         if (str == NULL) {
             return;
@@ -189,9 +214,24 @@ public:
         sf::Text text;
         text.setFont(font);
         text.setString(str);
-        text.setCharacterSize(24);
+        text.setCharacterSize(font_size);
         text.setFillColor(sf::Color::Black);
-        text.setPosition((start_.x + width / 2) * window_width - text.getLocalBounds().width / 2.0, (1 - (start_.y + height / 2)) * window_height - 16);
+        text.setPosition((start_.x + width / 2) * window_width - text.getLocalBounds().width / 2.0, (1 - (start_.y + height / 2)) * window_height - font_size * 0.6);
+        main_window_.draw(text);
+    }
+
+    static void draw_text_lefty(const Point &start_, double width, double height, const char* str, int font_size = 20, int length = 0)
+    {
+        if (str == NULL) {
+            return;
+        }
+        
+        sf::Text text;
+        text.setFont(font);
+        text.setString(str);
+        text.setCharacterSize(font_size);
+        text.setFillColor(sf::Color::Black);
+        text.setPosition(start_.x * window_width, (1 - (start_.y + height / 2)) * window_height - font_size * 0.6);
         main_window_.draw(text);
     }
 

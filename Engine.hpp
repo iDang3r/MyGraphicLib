@@ -50,7 +50,7 @@ public:
             Event_t event = Event::get();
             // std::cout << "Event: " << event.id << " " << event.x << " " << event.y << std::endl;
 
-            if (event.id == Event::CLICK || event.id == Event::HOVERED) {// || event.id == Event::RELEASE) {
+            if (event.id == Event::CLICK || event.id == Event::HOVERED) {
                 for (auto sys_window : system_windows) {
 
                     bool u = sys_window->check_mouse(event);
@@ -58,18 +58,17 @@ public:
                         break;
                     }
                 }
-            }
-
-            if (event.id == Event::RELEASE || event.id == Event::UNHOVERED || event.id == Event::MOUSE_MOVE) {
-                for (auto subscr_object : subscribes[event.id]) {
-                    subscr_object->handle(event);
-                }
+                continue;
             }
 
             if (event.id == Event::MOUSE_MOVE) {
                 for (auto drag : drag_subscribes) {
                     drag->move(event);
                 }
+            }
+            
+            for (auto subscr_object : subscribes[event.id]) {
+                subscr_object->handle(event);
             }
             
         }
@@ -139,7 +138,7 @@ public:
         return new_window->id_;
     }
 
-    static int create_label(int window_id, const Point &start, double width, double height, const char* label) 
+    static int create_label(int window_id, const Point &start, double width, double height, const char* label, const Color &color = COLORS::clear) 
     {
         Window* window = dynamic_cast<Window*>(all_objects[window_id]);
         if (window == nullptr) {
@@ -147,7 +146,7 @@ public:
         }
 
         Coordinates_convertion conv = convert_coordinates(start, width, height, window);
-        Label* new_label = new Label(conv.start, conv.width, conv.height, label);
+        Label* new_label = new Label(conv.start, conv.width, conv.height, label, color);
         
         window->sub_objects.push_back(new_label);
 
@@ -234,6 +233,32 @@ public:
         return 0;
     }
 
+    static int set_label_lefty(int label_id)
+    {
+        Label* label = dynamic_cast<Label*>(all_objects[label_id]);
+        if (label == nullptr) {
+            dump(DUMP_INFO, "False label id to set lefty");
+            return -1;
+        }
+        
+        label->set_lefty();
+
+        return 0;
+    }
+
+    static int set_label_text(int label_id, const char* str)
+    {
+        Label* label = dynamic_cast<Label*>(all_objects[label_id]);
+        if (label == nullptr) {
+            dump(DUMP_INFO, "False label id to set text");
+            return -1;
+        }
+        
+        label->set_text(str);
+
+        return 0;
+    }
+
     static int create_canvas(int window_id, const Point &start, double width, double height) 
     {
         Window* window = dynamic_cast<Window*>(all_objects[window_id]);
@@ -249,7 +274,7 @@ public:
         return new_canvas->id_;
     }
 
-    static int create_tool_manager(int window_id, const Point &start, double width, double height, Color &during_color) 
+    static int create_tool_manager(int window_id, const Point &start, double width, double height, Color &during_color, Canvas& canvas) 
     {
         Window* window = dynamic_cast<Window*>(all_objects[window_id]);
         if (window == nullptr) {
@@ -257,7 +282,7 @@ public:
         }
 
         Coordinates_convertion conv = convert_coordinates(start, width, height, window);
-        Tool_manager* new_tool_manager = new Tool_manager(conv.start, conv.width, conv.height, during_color);
+        Tool_manager* new_tool_manager = new Tool_manager(conv.start, conv.width, conv.height, during_color, canvas);
         
         window->sub_objects.push_back(new_tool_manager);
 
@@ -307,6 +332,11 @@ public:
             system_windows.erase(obj);
         }
         // delete obj;
+    }
+
+    static bool is_window_exists(int id)
+    {
+        return NULL != all_objects[id];
     }
 
 };

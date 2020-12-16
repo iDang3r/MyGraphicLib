@@ -26,6 +26,11 @@ public:
         subscribes[Event::UNHOVERED].insert(this);
     }
 
+    ~Button()
+    {
+        // subscribes[Event::RELEASE].erase(this);
+    }
+
     bool handle(const Event_t &event) 
     {
         // std::cout << "BUTTON HANDLER, x: " << event.x << ", y: " << event.y << std::endl;

@@ -30,6 +30,13 @@ public:
         DOUBLE_CLICK,
         MOUSE_MOVE,
 
+        BUTTON_UP,
+        BUTTON_DOWN,
+        BUTTON_LEFT,
+        BUTTON_RIGHT,
+
+        BUTTON_ENTER,
+
         // don't touch
         num_event_types
     };

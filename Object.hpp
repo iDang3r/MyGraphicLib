@@ -27,6 +27,8 @@ public:
     {
         for (auto child : sub_objects) {
             child->close();
+
+            // TODO
             // Have to delete from subscribes !!!
             // delete child;
         }

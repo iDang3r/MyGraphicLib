@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include "Window.hpp"
 
 class Label : public Window 
@@ -7,21 +8,46 @@ class Label : public Window
 private:
 public:
 
-    const char* str_ = NULL;
+    std::string str_;
     int         len_ = 0;
+    int         font_size_ = 20;
 
-    Label(const Point &start, double width, double height, const char* str) :
-        Window(start, width, height, COLORS::clear),  str_(str)
+    enum Position {
+        reserved,
+        lefty,
+        middle,
+        rightly,
+    } position;
+
+    Label(const Point &start, double width, double height, const char* str, const Color&color = COLORS::clear) :
+        Window(start, width, height, color),  str_(str), position(middle)
     {
         std::cout << "Label: " << start << ", width: " << width << ", height: " << height << std::endl;
-        if (str_ != NULL) {
-            len_ = strlen(str_);
-        }
+        
+        len_ = str_.length();
+    }
+
+    void set_lefty()
+    {
+        position = lefty;
+    }
+
+    void set_text(const char* str)
+    {
+        str_ = str;
+        len_ = str_.length();
     }
 
     void draw()
     {
-        draw_text(start_, width_, height_, str_, len_);
+        Window::draw();
+
+        if (position == middle) {
+            draw_text(start_, width_, height_, str_.c_str(), font_size_);
+        } else if (position == lefty) {
+            draw_text_lefty(start_, width_, height_, str_.c_str(), font_size_);
+        }
+        
     }
 
 };
