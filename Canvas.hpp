@@ -55,10 +55,15 @@ public:
         return true;
     }
 
-    void save_to_image(const char* source)
+    bool save_to_image(const char* source)
     {
         ws("SAVING IMAGE TO:");
         ww(source);
+
+        Image_container image_container;
+        image_container.set_pixel_array(pixel_array_.start, pixel_array_.width, pixel_array_.height);
+        
+        return image_container.save_to_file(source);
     }
 
     void draw()
@@ -161,7 +166,7 @@ public:
             }
 
         }
-        
+
 
     }
 

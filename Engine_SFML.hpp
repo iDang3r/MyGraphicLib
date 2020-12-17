@@ -135,6 +135,28 @@ public:
                         Event::push(Event_t(Event::BUTTON_ENTER));
                     }
 
+                    if (event.key.code == sf::Keyboard::Escape) {
+                        Event::push(Event_t(Event::BUTTON_ESCAPE));
+                    }
+
+                    if (event.key.code == sf::Keyboard::BackSpace) {
+                        Event::push(Event_t(Event::BUTTON_BACKSPACE));
+                    }
+
+                    break;
+                }
+
+                case sf::Event::TextEntered: {
+
+                    if (event.text.unicode < 128) {
+                        char c = static_cast<char>(event.text.unicode);
+                        if (c < 32) { // including ASCII backspace and other rubbish
+                            break;
+                        }
+                        Event::push(Event_t(Event::BUTTON_LETTER, c));
+                        // std::cout << "ASCII character typed: " << c << std::endl;
+                    }
+
                     break;
                 }
                 

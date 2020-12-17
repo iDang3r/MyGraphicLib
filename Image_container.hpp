@@ -35,6 +35,14 @@ public:
         memcpy(ptr, img_.getPixelsPtr(), 4 * width_px * height_px);
     }
 
+    void set_pixel_array(Pixel* ptr, int width_px, int height_px)
+    {
+        img_.create(width_px, height_px, reinterpret_cast<const sf::Uint8*>(ptr));
+    }
 
+    bool save_to_file(const char* source)
+    {
+        return img_.saveToFile(source);
+    }
 
 };
