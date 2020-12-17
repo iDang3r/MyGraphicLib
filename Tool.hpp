@@ -157,6 +157,7 @@ public:
     {
         if (event.id == Event::CLICK) {
             fix_point = Point(event.x, event.y);
+            canvas.draw_line(fix_point, fix_point, color_, thickness_);
             using_ = true;
             Event::hover_disable = true;
             return;

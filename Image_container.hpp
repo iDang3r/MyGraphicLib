@@ -5,7 +5,10 @@ private:
 public:
 
     sf::Image img_;
-    const char* name;
+    // const char* name;
+
+    Image_container()
+    {}
 
     Image_container(const char* source) 
     {
@@ -14,7 +17,12 @@ public:
             ww(source);
             abort();
         }
-        name = source;
+        // name = source;
+    }
+
+    bool load(const char* source)
+    {
+        return img_.loadFromFile(source);
     }
 
     void get_pixel_array(Pixel* &ptr, int &width_px, int &height_px)

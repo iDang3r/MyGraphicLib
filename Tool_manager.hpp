@@ -9,6 +9,7 @@
 
 class Set_tool;
 class Open_image;
+class Save_image;
 
 class Tool_manager : public Window
 {
@@ -30,7 +31,7 @@ public:
         add_tool(Point(0.55, 0.02 + 1 * up_size), 0.35, new Brush_tool(),     "brush.png");
 
         add_bttn(Point(0.1,  0.02 + 2 * up_size), 0.35, Open_image(canvas),   "open.png");
-        add_tool(Point(0.55, 0.02 + 2 * up_size), 0.35, new Brush_tool(),     "save.png");
+        add_bttn(Point(0.55, 0.02 + 2 * up_size), 0.35, Save_image(canvas),   "save.png");
 
         set_active_tool(0);
     }
@@ -84,13 +85,14 @@ public:
 };
 
 class Directory_view;
+class Open_image_functor;
 
 class Open_image
 {
 public:
-    Canvas& canvas;
-    bool opened = false;
-    int sys_window_id = 0; 
+    Canvas&         canvas;
+    int             sys_window_id   = 0;
+    Directory_view* dir_view        = nullptr;
 
     Open_image(Canvas& canvas) : canvas(canvas)
     {}
@@ -100,7 +102,6 @@ public:
         if (Engine::is_window_exists(sys_window_id)) {
             return;
         }
-        opened = true;
         sys_window_id = Engine::create_system_window(Point(0.03, 0.65), 0.25, 0.2);
 
         File_manager* file_manager = new File_manager("./");
@@ -108,10 +109,65 @@ public:
         int curr_dir_id = Engine::create_label(sys_window_id, Point(0.03, 0.7), 0.93, 0.2, (file_manager->get_current_dir()).c_str(), COLORS::white);
         Engine::set_label_lefty(curr_dir_id);
 
-        Directory_view* dir_view = new Directory_view(sys_window_id, Point(0.03, 0.45), 0.93, 0.2, file_manager, curr_dir_id);
+        dir_view = new Directory_view(sys_window_id, Point(0.03, 0.45), 0.93, 0.2, file_manager, curr_dir_id);
 
+        Engine::create_button(sys_window_id, Point(0.35, 0.1), 0.3, 0.3, Open_image_functor(canvas, file_manager, dir_view->during_subdir_num, sys_window_id), "OPEN", NULL, COLORS::tool);
     }
 
+};
+
+class Save_image
+{
+public:
+    Canvas&         canvas;
+    int             sys_window_id   = 0;
+    Directory_view* dir_view        = nullptr;
+
+    Save_image(Canvas& canvas) : canvas(canvas)
+    {}
+
+    void operator()(Engine::Button<Save_image>* button)
+    {
+        if (Engine::is_window_exists(sys_window_id)) {
+            return;
+        }
+        sys_window_id = Engine::create_system_window(Point(0.03, 0.4), 0.25, 0.2);
+
+        File_manager* file_manager = new File_manager("./");
+
+        int curr_dir_id = Engine::create_label(sys_window_id, Point(0.03, 0.7), 0.93, 0.2, (file_manager->get_current_dir()).c_str(), COLORS::white);
+        Engine::set_label_lefty(curr_dir_id);
+
+        dir_view = new Directory_view(sys_window_id, Point(0.03, 0.45), 0.93, 0.2, file_manager, curr_dir_id);
+
+        Engine::create_button(sys_window_id, Point(0.35, 0.1), 0.3, 0.3, Open_image_functor(canvas, file_manager, dir_view->during_subdir_num, sys_window_id), "SAVE", NULL, COLORS::tool);
+    }
+
+};
+
+class Open_image_functor
+{
+public:
+    Canvas&       canvas;
+    File_manager* file_manager;
+    int&          file_id;
+    int           sys_window_id;
+
+    Open_image_functor(Canvas& canvas, File_manager* file_manager, int& file_id, int sys_window_id) 
+        : canvas(canvas), file_manager(file_manager), file_id(file_id), sys_window_id(sys_window_id)
+    {}
+
+    void operator()(Engine::Button<Open_image_functor>* button)
+    {
+        if (!file_manager->is_subdir_file(file_id)) {
+            dump(DUMP_INFO, "can open file only");
+            return;
+        }
+
+        if (canvas.load_from_image((file_manager->get_current_dir() + "/" + file_manager->get_subdir_name(file_id)).c_str())) {
+            Engine::delete_window(sys_window_id);
+        }
+    }
 };
 
 class Directory_view : public Object

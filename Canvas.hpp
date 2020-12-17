@@ -10,8 +10,6 @@ public:
     Pixel_array     pixel_array_;
     Visible_part    visible_part_;
 
-    Image_container* image_container = NULL;
-
     const double zoom_coef = 1.2;
 
     Canvas(const Point &start, double width, double height) 
@@ -20,18 +18,30 @@ public:
         load_from_image("cute_image.jpg");
     }
 
-    void load_from_image(const char* source) 
+    ~Canvas()
+    {
+        if (pixel_array_.start) {
+            delete [] pixel_array_.start;
+        }
+    }
+
+    bool load_from_image(const char* source) 
     {
         ws("LOADING IMAGE FROM:");
         ww(source);
-        if (image_container) {
-            dump(DUMP_INFO, "Image already exists");
-            return;
+
+        Image_container image_container;
+
+        if (!image_container.load(source)) {
+            return false;
         }
 
-        image_container = new Image_container(source);
+        if (pixel_array_.start) {
+            delete [] pixel_array_.start;
+            pixel_array_.start = nullptr;
+        }
 
-        image_container->get_pixel_array(pixel_array_.start, pixel_array_.width, pixel_array_.height);
+        image_container.get_pixel_array(pixel_array_.start, pixel_array_.width, pixel_array_.height);
 
         visible_part_.x = 0;
         visible_part_.y = 0;
@@ -41,6 +51,8 @@ public:
 
         visible_part_.width  = pixel_array_.width / 2;
         visible_part_.height = visible_part_.width * height_px / width_px;
+
+        return true;
     }
 
     void save_to_image(const char* source)
@@ -53,7 +65,7 @@ public:
     {
         Window::draw();
 
-        if (image_container) {
+        if (pixel_array_.start) {
             draw_image_by_pixel_array(start_, width_, height_, pixel_array_, visible_part_);
         }
         
@@ -105,8 +117,8 @@ public:
             }
 
             // draw one point, if Point_begin == Point_end
-            for (int p_i = std::max(begin_x - thickness, 0); p_i <= std::min(begin_x + thickness, pixel_array_.width); ++p_i) {
-                for (int p_j = std::max(begin_y - thickness, 0); p_j <= std::min(begin_y + thickness, pixel_array_.height); ++p_j) {
+            for (int p_i = std::max(begin_x - thickness, 0); p_i <= std::min(begin_x + thickness, pixel_array_.width - 1); ++p_i) {
+                for (int p_j = std::max(begin_y - thickness, 0); p_j <= std::min(begin_y + thickness, pixel_array_.height - 1); ++p_j) {
                     if (SQR(p_i - begin_x) + SQR(p_j - begin_y) <= SQR(thickness)) {
                         pixel_array_.start[p_j * pixel_array_.width + p_i] = color;
                     }
@@ -117,8 +129,8 @@ public:
 
                 int j = begin_y + (end_y - begin_y) * (i - begin_x) / (end_x - begin_x);
 
-                for (int p_i = std::max(i - thickness, 0); p_i <= std::min(i + thickness, pixel_array_.width); ++p_i) {
-                    for (int p_j = std::max(j - thickness, 0); p_j <= std::min(j + thickness, pixel_array_.height); ++p_j) {
+                for (int p_i = std::max(i - thickness, 0); p_i <= std::min(i + thickness, pixel_array_.width - 1); ++p_i) {
+                    for (int p_j = std::max(j - thickness, 0); p_j <= std::min(j + thickness, pixel_array_.height - 1); ++p_j) {
                         if (SQR(p_i - i) + SQR(p_j - j) <= SQR(thickness)) {
                             pixel_array_.start[p_j * pixel_array_.width + p_i] = color;
                         }
@@ -138,8 +150,8 @@ public:
 
                 int i = begin_x + (end_x - begin_x) * (j - begin_y) / (end_y - begin_y);
 
-                for (int p_i = std::max(i - thickness, 0); p_i <= std::min(i + thickness, pixel_array_.width); ++p_i) {
-                    for (int p_j = std::max(j - thickness, 0); p_j <= std::min(j + thickness, pixel_array_.height); ++p_j) {
+                for (int p_i = std::max(i - thickness, 0); p_i <= std::min(i + thickness, pixel_array_.width - 1); ++p_i) {
+                    for (int p_j = std::max(j - thickness, 0); p_j <= std::min(j + thickness, pixel_array_.height - 1); ++p_j) {
                         if (SQR(p_i - i) + SQR(p_j - j) <= SQR(thickness)) {
                             pixel_array_.start[p_j * pixel_array_.width + p_i] = color;
                         }
@@ -149,7 +161,7 @@ public:
             }
 
         }
-
+        
 
     }
 
@@ -199,6 +211,7 @@ public:
                 visible_part_.width = visible_part_.height / height_ * width_ * window_w_to_h;
             }
         }
+
     }
 
     bool handle(const Event_t &event)
