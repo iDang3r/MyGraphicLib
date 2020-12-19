@@ -43,7 +43,9 @@ public:
     {
         if (event.id == Event::MOUSE_MOVE) {
             tool_manager->use_tool(*canvas, event);
+            return true;
         }
+        return false;
     }
 
     bool check_mouse(const Event_t &event) 

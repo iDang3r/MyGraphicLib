@@ -142,6 +142,10 @@ void Engine_SFML::before_rendering()
 
                 break;
             }
+
+            default: {
+                // Not got sf::Events
+            }
             
 
         }

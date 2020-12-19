@@ -1,9 +1,9 @@
 #include "Engine_protocol.hpp"
 
-int  Engine_protocol::init()                                                          {}
-int  Engine_protocol::terminate()                                                     {}
+int  Engine_protocol::init()                                                          {return 1;}
+int  Engine_protocol::terminate()                                                     {return 1;}
 
-int  Engine_protocol::is_run()                                                        {}
+int  Engine_protocol::is_run()                                                        {return 0;}
 
 void Engine_protocol::before_rendering()                                              {}
 void Engine_protocol::after_rendering()                                               {}

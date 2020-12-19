@@ -3,7 +3,15 @@
 Engine::Tool_manager::Tool_manager(const Point &start, double width, double height, Color& during_color, int& thickness, Canvas& canvas) :
     Window(start, width, height, COLORS::tool_manager), during_color(during_color), thickness(thickness)
 {
-    std::vector<std::string> plugin_names = {"BoxBlur", "ColorFilter", "GaussianBlur"};
+    File_manager f_manager("Plugins");
+    std::vector<std::string> plugin_names;
+
+    for (int i = 2; i < f_manager.get_dir_size(); ++i) {
+        if (f_manager.is_subdir_dir(i)) {
+            plugin_names.push_back(f_manager.get_subdir_name(i));
+            ws(plugin_names.back());
+        }
+    }
 
     Engine::create_label(id_, Point(0.0, 0.88), 1.0, 0.1, "Tools");
 
@@ -26,6 +34,7 @@ Engine::Tool_manager::Tool_manager(const Point &start, double width, double heig
             add_plug(Point(0.55, 0.02 + (num / 2) * up_size), 0.35, plugin_names[i]);
         }
     }
+
 
     // add_plug(Point(0.1,  0.02 + 3 * up_size), 0.35, "BoxBlur");
     // add_plug(Point(0.55, 0.02 + 3 * up_size), 0.35, "ColorFilter");
@@ -230,6 +239,8 @@ bool Engine::Directory_view::handle(const Event_t& event)
     }
 
     }
+
+    return true;
 }
 
 bool Engine::Directory_view::check_mouse(const Event_t &event)
@@ -297,6 +308,8 @@ bool Engine::Input_box::handle(const Event_t& event)
     }
 
     }
+
+    return true;
 }
 
 bool Engine::Input_box::check_mouse(const Event_t &event)
