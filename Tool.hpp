@@ -18,56 +18,30 @@ public:
         FILL,
     } type;
 
-    Color   color_;
-    int     thickness_;
-    bool    using_      = false;  
+    Color   color_      = COLORS::cyan;
+    int     thickness_  = 3;
+    bool    using_      = false;
     Point   fix_point   = Point(0.0, 0.0);
 
     bool is_active = false;
 
-    Tool(const Color &color, int thickness, Type enum_type) : color_(color), thickness_(thickness), type(enum_type) 
-    {
-        subscribes[Event::RELEASE].insert(this);
-    }
+    Tool();
 
-    ~Tool() 
-    {
-        subscribes[Event::RELEASE].erase(this);
-    }
+    Tool(const Color &color, int thickness, Type enum_type);
+
+    ~Tool();
     
-    void set_color(const Color &color) 
-    {
-        color_ = color;
-    }
+    void set_color(const Color &color);
 
-    void set_thickness(int thickness) 
-    {
-        thickness_ = thickness;
-    }
+    void set_thickness(int thickness);
 
-    void set_active()
-    {
-        is_active = true;
-    }
+    void set_active();
 
-    void unset_activ()
-    {
-        is_active = false;
-    }
+    void unset_activ();
 
-    bool handle(const Event_t& event) 
-    {
-        if (event.id == Event::RELEASE) {
-            using_ = false;
-            return true;
-        }
-        return false;
-    }
+    bool handle(const Event_t& event);
 
-    bool check_mouse(const Event_t &event)
-    {
-        return false;
-    }
+    bool check_mouse(const Event_t &event);
 
     virtual void use(Canvas &canvas, const Event_t &event) = 0;
 
@@ -78,35 +52,9 @@ class Hand_tool : public Tool
 {
 public:
 
-    Hand_tool() : Tool(COLORS::clear, 0.0, Tool::HAND) 
-        {}
+    Hand_tool();
 
-    void use(Canvas &canvas, const Event_t &event)
-    {
-        // ws("USING HAND");
-        if (event.id == Event::CLICK) {
-            ws("Hand click");
-            fix_point = Point(event.x, event.y);
-            using_ = true;
-            Event::hover_disable = true;
-            return;
-        }
-
-        if (using_ && event.id == Event::MOUSE_MOVE) {
-            if (canvas.move(Point(event.x, event.y) - fix_point)) {
-                fix_point = Point(event.x, event.y);
-            }
-            return;
-        }
-
-        if (using_ && event.id == Event::RELEASE) {
-            ws("UN_Hand");
-            using_ = false;
-            Event::hover_disable = false;
-            return;
-        }
-
-    }
+    void use(Canvas &canvas, const Event_t &event);
 
 };
 
@@ -114,17 +62,9 @@ class Zoom_up_tool : public Tool
 {
 public:
 
-    Zoom_up_tool() : Tool(COLORS::clear, 0.0, Tool::ZOOM_UP) 
-        {}
+    Zoom_up_tool();
 
-    void use(Canvas &canvas, const Event_t &event)
-    {
-        if (event.id == Event::CLICK) {
-            canvas.zoom_up(Point(event.x, event.y));
-            return;
-        }
-
-    }
+    void use(Canvas &canvas, const Event_t &event);
 
 };
 
@@ -132,17 +72,9 @@ class Zoom_down_tool : public Tool
 {
 public:
 
-    Zoom_down_tool() : Tool(COLORS::clear, 0, Tool::ZOOM_DOWN) 
-        {}
+    Zoom_down_tool();
 
-    void use(Canvas &canvas, const Event_t &event)
-    {
-        if (event.id == Event::CLICK) {
-            canvas.zoom_down(Point(event.x, event.y));
-            return;
-        }
-
-    }
+    void use(Canvas &canvas, const Event_t &event);
 
 };
 
@@ -150,32 +82,9 @@ class Brush_tool : public Tool
 {
 public:
 
-    Brush_tool() : Tool(COLORS::black, 10, Tool::BRUSH)
-        {}
+    Brush_tool();
 
-    void use(Canvas &canvas, const Event_t &event)
-    {
-        if (event.id == Event::CLICK) {
-            fix_point = Point(event.x, event.y);
-            canvas.draw_line(fix_point, fix_point, color_, thickness_);
-            using_ = true;
-            Event::hover_disable = true;
-            return;
-        }
-
-        if (using_ && event.id == Event::MOUSE_MOVE) {
-            canvas.draw_line(fix_point, Point(event.x, event.y), color_, thickness_);
-            fix_point = Point(event.x, event.y);
-            return;
-        }
-
-        if (using_ && event.id == Event::RELEASE) {
-            using_ = false;
-            Event::hover_disable = false;
-            return;
-        }
-    }
-
+    void use(Canvas &canvas, const Event_t &event);
 
 };
 

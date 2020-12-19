@@ -19,74 +19,29 @@ public:
     double x;
     double y;
 
-    Point(double x, double y) : x(x), y(y) {}
+    Point(double x, double y);
 
-    // void set() const 
-    // {
-    //     glVertex2d(x, y);
-    // }
+    Point& operator+=(const Point &p);
 
-    Point& operator+=(const Point &p) 
-    {
-        x += p.x;
-        y += p.y;
-        return *this;
-    }
+    Point& operator-=(const Point &p);
 
-    Point& operator-=(const Point &p) 
-    {
-        x -= p.x;
-        y -= p.y;
-        return *this;
-    }
+    Point operator+(const Point &p) const;
 
-    Point operator+(const Point &p) const 
-    {
-        Point n_p = *this;
-        return n_p += p;
-    }
+    Point operator-(const Point &p) const;
 
-    Point operator-(const Point &p) const 
-    {
-        Point n_p = *this;
-        return n_p -= p;
-    }
+    Point operator*(double k) const;
 
-    Point operator*(double k) const 
-    {
-        return Point(k * x, k * y);
-    }
+    Point orthogonal() const;
 
-    Point orthogonal() const 
-    {
-        return Point(-y, x);
-    }
+    double length() const;
 
-    double length() const 
-    {
-        return std::sqrt(x * x + y * y);
-    }
+    void set_normal();
 
-    void set_normal() 
-    {
-        double len = length();
-        x /= len;
-        y /= len;
-    }
-
-    void OpenGL_fit() 
-    {
-        x *= 2;
-        y *= 2;
-    }
+    void OpenGL_fit();
 
 };
 
-std::ostream& operator<<(std::ostream &out, const Point &point)
-{
-    out << "x: " << point.x << ", y: " << point.y;
-    return out;
-}
+std::ostream& operator<<(std::ostream &out, const Point &point);
 
 #pragma pack(push, 1)
 class Pixel
@@ -97,28 +52,14 @@ public:
     uint8_t b;
     uint8_t a;
 
-    Pixel(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0xFF) : 
-        r(r), g(g), b(b), a(a) 
-    {}
+    Pixel(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0xFF);
 
-    Pixel& operator=(const Color &color)
-    {
-        r = static_cast<uint8_t>(color.r * 255);
-        g = static_cast<uint8_t>(color.g * 255);
-        b = static_cast<uint8_t>(color.b * 255);
-        a = static_cast<uint8_t>(color.a * 255);
-
-        return *this;
-    }
+    Pixel& operator=(const Color &color);
 
 };
 #pragma pack(pop)
 
-std::ostream& operator<<(std::ostream &out, const Color &color)
-{
-    out << color.r << " " << color.g << " " << color.b << " " << color.a;
-    return out;
-}
+std::ostream& operator<<(std::ostream &out, const Color &color);
 
 struct Pixel_array
 {

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 double H(int hex);
 
 class Color 
@@ -25,6 +27,8 @@ public:
     void lighter();
 
     void de_lighter();
+
+    operator uint32_t() const;
 };
 
 namespace COLORS

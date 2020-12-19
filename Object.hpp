@@ -1,4 +1,10 @@
-#pragma once
+// #pragma once
+#ifndef OBJECT_HPP
+#define OBJECT_HPP
+
+#include <vector>
+
+#include "Event.hpp"
 
 class Object
 {
@@ -8,31 +14,17 @@ public:
     int id_;
     std::vector<Object*> sub_objects;
 
-    Object() : id_(Engine::valid_id_++)
-    {
-        Engine::all_objects[id_] = this;
-        std::cout << "Object_id: " << id_ << std::endl;
-    }
+    Object();
+    ~Object();
 
-    virtual void draw() {}
+    virtual void draw();
 
-    virtual bool handle(const Event_t& event)
-    {
-        return false;
-    }
+    virtual bool handle(const Event_t& event);
 
     virtual bool check_mouse(const Event_t &event) = 0;
 
-    virtual void close()
-    {
-        for (auto child : sub_objects) {
-            child->close();
-
-            // TODO
-            // Have to delete from subscribes !!!
-            // delete child;
-        }
-        all_objects[id_] = NULL;
-    }
+    virtual void close();
 
 };
+
+#endif // OBJECT_HPP

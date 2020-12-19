@@ -12,9 +12,9 @@ public:
 
     char    letter;
 
-    Event_t(int id) : id(id) {}
-    Event_t(int id, double x, double y) : id(id), x(x), y(y) {}
-    Event_t(int id, char letter) : id(id), letter(letter) {}
+    Event_t(int id);
+    Event_t(int id, double x, double y);
+    Event_t(int id, char letter);
 
 };
 
@@ -51,26 +51,10 @@ public:
     static bool hover_disable;
     static std::queue<Event_t> queue;
 
-    static bool empty()
-    {
-        return queue.empty();
-    }
+    static bool empty();
 
-    static Event_t get() 
-    {
-        Event_t ret = queue.front();
-        queue.pop();
-        if (hover_disable && (ret.id == HOVERED || ret.id == UNHOVERED)) {
-            ret.id = RESERVED;
-        }
-        return ret;
-    }
+    static Event_t get();
 
-    static void push(const Event_t &event) 
-    {
-        queue.push(event);
-    }
+    static void push(const Event_t &event);
 
 };
-std::queue<Event_t> Event::queue;
-bool Event::hover_disable = false;

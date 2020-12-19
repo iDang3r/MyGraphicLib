@@ -5,6 +5,7 @@
 #include "Canvas.hpp"
 #include "Tool_manager.hpp"
 #include "Palette.hpp"
+#include "Thickness.hpp"
 
 class Painter : public Window
 {
@@ -13,6 +14,7 @@ public:
     Canvas*         canvas       = nullptr;
     Tool_manager*   tool_manager = nullptr;
     Palette*        palette      = nullptr;
+    Thickness*      thickness    = nullptr;
 
     Painter(const Point &start, double width, double height) :
         Window(start, width, height, COLORS::painter)
@@ -22,10 +24,13 @@ public:
         int canvas_id = Engine::create_canvas(id_, Point(0.02, 0.02), 0.8, 0.96);
         canvas = dynamic_cast<Canvas*>(all_objects[canvas_id]);
 
-        int palette_id = Engine::create_palette(id_, Point(0.84, 0.82), 0.14, 0.16);
+        int palette_id = Engine::create_palette(id_, Point(0.84, 0.84), 0.14, 0.14);
         palette = dynamic_cast<Palette*>(all_objects[palette_id]);
 
-        int tool_manger_id = Engine::create_tool_manager(id_, Point(0.84, 0.02), 0.14, 0.78, palette->color, *canvas);
+        int thickness_id = Engine::create_thickness(id_, Point(0.84, 0.72), 0.14, 0.10);
+        thickness = dynamic_cast<Thickness*>(all_objects[thickness_id]);
+
+        int tool_manger_id = Engine::create_tool_manager(id_, Point(0.84, 0.02), 0.14, 0.68, palette->color, thickness->thickness, *canvas);
         tool_manager = dynamic_cast<Tool_manager*>(all_objects[tool_manger_id]);
     }
 
@@ -55,6 +60,7 @@ public:
 
         tool_manager->check_mouse(event);
         palette->check_mouse(event);
+        thickness->check_mouse(event);
 
         return handle(event);
     }

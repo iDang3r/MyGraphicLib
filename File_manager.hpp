@@ -15,12 +15,9 @@ public:
         std::string name;
         int type;
 
-        Dir(const std::string& name, int type) : name(name), type(type) {}
+        Dir(const std::string& name, int type);
 
-        bool operator<(const Dir& dir) const
-        {
-            return name < dir.name;
-        }
+        bool operator<(const Dir& dir) const;
     };
 
     std::string current_dir;

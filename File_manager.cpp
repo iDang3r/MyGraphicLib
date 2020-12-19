@@ -3,7 +3,6 @@
 #include <string>
 #include <algorithm>
 
-#include <AssertMacros.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <dirent.h>
@@ -14,7 +13,6 @@
 namespace Engine {
     #include "File_manager.hpp"
 };
-
 
 void Engine::File_manager::rescan_dir()
 {
@@ -102,4 +100,11 @@ void Engine::File_manager::go_to_subdir(int num)
     current_dir += "/" + subdirs[num].name;
 
     rescan_dir();
+}
+
+Engine::File_manager::Dir::Dir(const std::string& name, int type) : name(name), type(type) {}
+
+bool Engine::File_manager::Dir::operator<(const Dir& dir) const
+{
+    return name < dir.name;
 }
