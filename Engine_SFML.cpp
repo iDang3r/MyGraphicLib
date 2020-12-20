@@ -25,6 +25,11 @@ int Engine_SFML::is_run()
 
 void Engine_SFML::before_rendering() 
 {
+    // if (!Event::hover_disable) {
+    //     Event::push(Event_t(Event::CLICK, 0.89375, 0.8352));
+    //     Event::push(Event_t(Event::RELEASE, 0.89375, 0.8352));
+    // }
+
     sf::Event event;
     while (main_window_.pollEvent(event))
     {
@@ -39,6 +44,12 @@ void Engine_SFML::before_rendering()
                 window_height = event.size.height;
                 window_w_to_h = (double)window_width / window_height;
                 angle_circle_y = angle_circle_x * window_w_to_h;
+
+                sf::View view(sf::FloatRect(0.f, 0.f, window_width, window_height));
+
+                // activate it
+                main_window_.setView(view);
+
                 ws("RESIZED");
                 ww(window_width);
                 ww(window_height);
@@ -75,6 +86,8 @@ void Engine_SFML::before_rendering()
 
                     Point point((double)event.mouseButton.x / window_width, 1 - (double)event.mouseButton.y / window_height);
                     Event_t new_event(Event::CLICK, point.x, point.y);
+
+                    // ww(point);
 
                     Event::push(new_event);
                 }

@@ -16,7 +16,7 @@ OBJ_D        := ./objects
 HEADERS      := $(wildcard *.hpp)
 SOURCEFILES  := $(wildcard *.cpp)
 OBJFILES     := $(SOURCEFILES:%.cpp=$(OBJ_D)/%.o)
-CFlags       := -std=c++17 -O3 -arch x86_64
+CFlags       := -std=c++17 -O0 -arch x86_64
 Warnings     := -Wall -Wextra -Weffc++ -Wc++0x-compat -Wc++11-compat -Wc++14-compat -Wcast-align -Wcast-qual -Wchar-subscripts -Wconversion -Wctor-dtor-privacy -Wempty-body -Wfloat-equal -Wformat-nonliteral -Wformat-security -Wformat=2 -Winline -Wmissing-declarations -Wnon-virtual-dtor -Woverloaded-virtual -Wpacked -Wpointer-arith -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wswitch-default -Wswitch-enum -Wundef -Wunreachable-code -Wunused -Wvariadic-macros -Wno-literal-range -Wno-missing-field-initializers -Wno-narrowing -Wno-old-style-cast -Wno-varargs -Wno-unused-result -fcheck-new -fsized-deallocation -fstack-check -fstack-protector -fstrict-overflow -fno-omit-frame-pointer -fPIE
 Flags_SFML   := -F/Library/Frameworks -framework Cocoa -framework SFML -lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system
 
