@@ -15,8 +15,8 @@ void Engine_protocol::draw_square   (const Point&, double, const Color&)        
 void Engine_protocol::draw_circle   (const Point&, double, const Color&)              {} 
 void Engine_protocol::draw_text     (const Point&, double, double, const char*, int)  {}
 
-int     Engine_protocol::window_width    = 2560; // 1400
-int     Engine_protocol::window_height   = 1250; // 800
+int     Engine_protocol::window_width    = 1920; // 1400
+int     Engine_protocol::window_height   = 1000; // 800
 double  Engine_protocol::window_w_to_h   = (double)window_width / window_height;
 
 double  Engine_protocol::angle_circle_x  = 0.007;
